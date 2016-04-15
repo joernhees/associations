@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="http://eelst.cs.unibo.it/apps/LODE/owl.css" rel="stylesheet"
+          type="text/css"/>
+    <link href="http://eelst.cs.unibo.it/apps/LODE/Primer.css" rel="stylesheet"
+          type="text/css"/>
+    <link href="http://eelst.cs.unibo.it/apps/LODE/rec.css" rel="stylesheet"
+          type="text/css"/>
+    <link href="http://eelst.cs.unibo.it/apps/LODE/extra.css" rel="stylesheet"
+          type="text/css"/>
+    <link rel="shortcut icon"
+          href="http://eelst.cs.unibo.it/apps/LODE/favicon.ico"/>
+    <script src="http://eelst.cs.unibo.it/apps/LODE/jquery.js"></script>
+    <script src="http://eelst.cs.unibo.it/apps/LODE/jquery.scrollTo.js"></script>
+    <!-- <script src="/static/js/marked.min.js"></script> -->
+    <script>
+        $(document).ready(
+                function () {
+                    jQuery(".markdown").each(function (el) {
+                        jQuery(this).after(marked(jQuery(this).text())).remove()
+                    });
+                    var list = $('a[name="http://associations.joernhees.de/association_vocab"]');
+                    if (list.size() != 0) {
+                        var element = list.first();
+                        $.scrollTo(element);
+                    }
+                });
+    </script>
+</head>
+<body>
+<div class="head">
+    <dl>
+        <dt>IRI:</dt>
+        <dd>http://associations.joernhees.de/association_vocab</dd>
+        <dt>Version IRI:</dt>
+        <dd>http://associations.joernhees.de/association_vocab/1.0.0</dd>
+    </dl>
+    <dl>
+        <dt>Current version:</dt>
+        <dd>1.0.0</dd>
+    </dl>
+    <dl>
+        <dt>Other visualisation:</dt>
+        <dd>
+            <a href="http://eelst.cs.unibo.it/apps/LODE/source?url=http://associations.joernhees.de/association_vocab">Ontology
+                source</a></dd>
+    </dl>
+</div>
+<hr/>
+<div id="toc"><h2>Table of Content</h2>
+    <ol>
+        <li><a href="#classes">Classes</a></li>
+        <li><a href="#objectproperties">Object Properties</a></li>
+        <li><a href="#dataproperties">Data Properties</a></li>
+        <li><a href="#namespacedeclarations">Namespace Declarations</a></li>
+    </ol>
+</div>
+<div id="classes"><h2>Classes</h2>
+    <ul class="hlist">
+        <li><a href="#d4e117"
+               title="http://associations.joernhees.de/association_vocab#Association">Association</a>
+        </li>
+        <li><a href="#d4e128"
+               title="http://associations.joernhees.de/association_vocab#Mapping">Mapping</a>
+        </li>
+        <li><a href="#d4e140"
+               title="http://associations.joernhees.de/association_vocab#Term">Term</a>
+        </li>
+        <li><a href="#d4e151"
+               title="http://associations.joernhees.de/association_vocab#VerifiedMapping">VerifiedMapping</a>
+        </li>
+    </ul>
+    <div id="d4e117" class="entity"><a
+            name="http://associations.joernhees.de/association_vocab#Association"></a><a
+            name="Association"></a>
+        <h3>Association<sup title="class" class="type-c">c</sup><span
+                class="backlink"> back to <a href="#toc">ToC</a> or <a
+                href="#classes">Class ToC</a></span></h3>
+        <p><strong>IRI:</strong>
+            http://associations.joernhees.de/association_vocab#Association</p>
+        <div class="comment"><span class="markdown">An association having a stimulus and a respone, a count and frequency.</span>
+        </div>
+        <dl class="description">
+            <dt>is in domain of</dt>
+            <dd><a href="#d4e63"
+                   title="http://associations.joernhees.de/association_vocab#count">count</a><sup
+                    title="data property" class="type-dp">dp</sup>, <a
+                    href="#d4e79"
+                    title="http://associations.joernhees.de/association_vocab#frequency">frequency</a><sup
+                    title="data property" class="type-dp">dp</sup>, <a
+                    href="#d4e15"
+                    title="http://associations.joernhees.de/association_vocab#mappedTo">mapped
+                to</a><sup title="object property" class="type-op">op</sup>, <a
+                    href="#d4e31"
+                    title="http://associations.joernhees.de/association_vocab#response">response</a><sup
+                    title="object property" class="type-op">op</sup>, <a
+                    href="#d4e46"
+                    title="http://associations.joernhees.de/association_vocab#stimulus">stimulus</a><sup
+                    title="object property" class="type-op">op</sup></dd>
+            <dt>is in range of</dt>
+            <dd><a href="#d4e15"
+                   title="http://associations.joernhees.de/association_vocab#mappedTo">mapped
+                to</a><sup title="object property" class="type-op">op</sup></dd>
+        </dl>
+    </div>
+    <div id="d4e128" class="entity"><a
+            name="http://associations.joernhees.de/association_vocab#Mapping"></a><a
+            name="Mapping"></a>
+        <h3>Mapping<sup title="class" class="type-c">c</sup><span
+                class="backlink"> back to <a href="#toc">ToC</a> or <a
+                href="#classes">Class ToC</a></span></h3>
+        <p><strong>IRI:</strong>
+            http://associations.joernhees.de/association_vocab#Mapping</p>
+        <div class="comment"><span class="markdown">A mapping in the context of associations. If an association is an instance of this class it typically wasn't directly created on the dataset of the stimulus and response but was mapped to the entities from another dataset (see the mappedTo property).</span>
+        </div>
+        <dl class="description">
+            <dt>has sub-classes</dt>
+            <dd><a href="#d4e151"
+                   title="http://associations.joernhees.de/association_vocab#VerifiedMapping">VerifiedMapping</a><sup
+                    title="class" class="type-c">c</sup></dd>
+        </dl>
+    </div>
+    <div id="d4e140" class="entity"><a
+            name="http://associations.joernhees.de/association_vocab#Term"></a><a
+            name="Term"></a>
+        <h3>Term<sup title="class" class="type-c">c</sup><span class="backlink"> back to <a
+                href="#toc">ToC</a> or <a href="#classes">Class ToC</a></span>
+        </h3>
+        <p><strong>IRI:</strong>
+            http://associations.joernhees.de/association_vocab#Term</p>
+        <div class="comment"><span class="markdown">A class representing an association term that can either occur as stimulus or as response of an association.</span>
+        </div>
+        <dl class="description">
+            <dt>is in range of</dt>
+            <dd><a href="#d4e31"
+                   title="http://associations.joernhees.de/association_vocab#response">response</a><sup
+                    title="object property" class="type-op">op</sup>, <a
+                    href="#d4e46"
+                    title="http://associations.joernhees.de/association_vocab#stimulus">stimulus</a><sup
+                    title="object property" class="type-op">op</sup></dd>
+        </dl>
+    </div>
+    <div id="d4e151" class="entity"><a
+            name="http://associations.joernhees.de/association_vocab#VerifiedMapping"></a><a
+            name="VerifiedMapping"></a>
+        <h3>VerifiedMapping<sup title="class" class="type-c">c</sup><span
+                class="backlink"> back to <a href="#toc">ToC</a> or <a
+                href="#classes">Class ToC</a></span></h3>
+        <p><strong>IRI:</strong>
+            http://associations.joernhees.de/association_vocab#VerifiedMapping
+        </p>
+        <div class="comment"><span class="markdown">A mapping that has been manually verified.</span>
+        </div>
+        <dl class="description">
+            <dt>has super-classes</dt>
+            <dd><a href="#d4e128"
+                   title="http://associations.joernhees.de/association_vocab#Mapping">Mapping</a><sup
+                    title="class" class="type-c">c</sup></dd>
+        </dl>
+    </div>
+</div>
+<div id="objectproperties"><h2>Object Properties</h2>
+    <ul class="hlist">
+        <li><a href="#d4e15"
+               title="http://associations.joernhees.de/association_vocab#mappedTo">mapped
+            to</a></li>
+        <li><a href="#d4e31"
+               title="http://associations.joernhees.de/association_vocab#response">response</a>
+        </li>
+        <li><a href="#d4e46"
+               title="http://associations.joernhees.de/association_vocab#stimulus">stimulus</a>
+        </li>
+    </ul>
+    <div id="d4e15" class="entity"><a
+            name="http://associations.joernhees.de/association_vocab#mappedTo"></a><a
+            name="mappedTo"></a>
+        <h3>mapped to<sup title="object property" class="type-op">op</sup><span
+                class="backlink"> back to <a href="#toc">ToC</a> or <a
+                href="#objectproperties">Object Property ToC</a></span></h3>
+        <p><strong>IRI:</strong>
+            http://associations.joernhees.de/association_vocab#mappedTo</p>
+        <div class="comment"><span class="markdown">A mapping from an association in one dataset to an equivalent one in another.</span>
+        </div>
+        <div class="description">
+            <dl>
+                <dt>has domain</dt>
+                <dd><a href="#d4e117"
+                       title="http://associations.joernhees.de/association_vocab#Association">Association</a><sup
+                        title="class" class="type-c">c</sup></dd>
+                <dt>has range</dt>
+                <dd><a href="#d4e117"
+                       title="http://associations.joernhees.de/association_vocab#Association">Association</a><sup
+                        title="class" class="type-c">c</sup></dd>
+            </dl>
+        </div>
+    </div>
+    <div id="d4e31" class="entity"><a
+            name="http://associations.joernhees.de/association_vocab#response"></a><a
+            name="response"></a>
+        <h3>response<sup title="object property" class="type-op">op</sup><span
+                class="backlink"> back to <a href="#toc">ToC</a> or <a
+                href="#objectproperties">Object Property ToC</a></span></h3>
+        <p><strong>IRI:</strong>
+            http://associations.joernhees.de/association_vocab#response</p>
+        <div class="comment"><span class="markdown">The response term of an association.</span>
+        </div>
+        <div class="description">
+            <dl>
+                <dt>has domain</dt>
+                <dd><a href="#d4e117"
+                       title="http://associations.joernhees.de/association_vocab#Association">Association</a><sup
+                        title="class" class="type-c">c</sup></dd>
+                <dt>has range</dt>
+                <dd><a href="#d4e140"
+                       title="http://associations.joernhees.de/association_vocab#Term">Term</a><sup
+                        title="class" class="type-c">c</sup></dd>
+            </dl>
+        </div>
+    </div>
+    <div id="d4e46" class="entity"><a
+            name="http://associations.joernhees.de/association_vocab#stimulus"></a><a
+            name="stimulus"></a>
+        <h3>stimulus<sup title="object property" class="type-op">op</sup><span
+                class="backlink"> back to <a href="#toc">ToC</a> or <a
+                href="#objectproperties">Object Property ToC</a></span></h3>
+        <p><strong>IRI:</strong>
+            http://associations.joernhees.de/association_vocab#stimulus</p>
+        <div class="comment"><span class="markdown">The stimulus term of an association.</span>
+        </div>
+        <div class="description">
+            <dl>
+                <dt>has domain</dt>
+                <dd><a href="#d4e117"
+                       title="http://associations.joernhees.de/association_vocab#Association">Association</a><sup
+                        title="class" class="type-c">c</sup></dd>
+                <dt>has range</dt>
+                <dd><a href="#d4e140"
+                       title="http://associations.joernhees.de/association_vocab#Term">Term</a><sup
+                        title="class" class="type-c">c</sup></dd>
+            </dl>
+        </div>
+    </div>
+</div>
+<div id="dataproperties"><h2>Data Properties</h2>
+    <ul class="hlist">
+        <li><a href="#d4e63"
+               title="http://associations.joernhees.de/association_vocab#count">count</a>
+        </li>
+        <li><a href="#d4e79"
+               title="http://associations.joernhees.de/association_vocab#frequency">frequency</a>
+        </li>
+    </ul>
+    <div id="d4e63" class="entity"><a
+            name="http://associations.joernhees.de/association_vocab#count"></a><a
+            name="count"></a>
+        <h3>count<sup title="data property" class="type-dp">dp</sup><span
+                class="backlink"> back to <a href="#toc">ToC</a> or <a
+                href="#dataproperties">Data Property ToC</a></span></h3>
+        <p><strong>IRI:</strong>
+            http://associations.joernhees.de/association_vocab#count</p>
+        <div class="comment"><span class="markdown">The count how often this association occurred.</span>
+        </div>
+        <div class="description">
+            <dl>
+                <dt>has domain</dt>
+                <dd><a href="#d4e117"
+                       title="http://associations.joernhees.de/association_vocab#Association">Association</a><sup
+                        title="class" class="type-c">c</sup></dd>
+                <dt>has range</dt>
+                <dd><span class="dotted"
+                          title="http://www.w3.org/2001/XMLSchema#positiveInteger">positive integer</span>
+                </dd>
+            </dl>
+        </div>
+    </div>
+    <div id="d4e79" class="entity"><a
+            name="http://associations.joernhees.de/association_vocab#frequency"></a><a
+            name="frequency"></a>
+        <h3>frequency<sup title="data property" class="type-dp">dp</sup><span
+                class="backlink"> back to <a href="#toc">ToC</a> or <a
+                href="#dataproperties">Data Property ToC</a></span></h3>
+        <p><strong>IRI:</strong>
+            http://associations.joernhees.de/association_vocab#frequency</p>
+        <div class="comment"><span class="markdown">The relative count of this association wrt. all associations of the stimulus.</span>
+        </div>
+        <div class="description">
+            <dl>
+                <dt>has domain</dt>
+                <dd><a href="#d4e117"
+                       title="http://associations.joernhees.de/association_vocab#Association">Association</a><sup
+                        title="class" class="type-c">c</sup></dd>
+                <dt>has range</dt>
+                <dd></dd>
+            </dl>
+        </div>
+    </div>
+</div>
+<div id="namespacedeclarations"><h2>Namespace Declarations <span
+        class="backlink"> back to <a href="#toc">ToC</a></span></h2>
+    <dl>
+        <dt><em>default namespace</em></dt>
+        <dd>http://associations.joernhees.de/association_vocab#</dd>
+        <dt>association-vocab</dt>
+        <dd>http://associations.joernhees.de/association_vocab/</dd>
+        <dt>associations-joernhees-de</dt>
+        <dd>http://associations.joernhees.de/</dd>
+        <dt>owl</dt>
+        <dd>http://www.w3.org/2002/07/owl#</dd>
+        <dt>rdf</dt>
+        <dd>http://www.w3.org/1999/02/22-rdf-syntax-ns#</dd>
+        <dt>rdfs</dt>
+        <dd>http://www.w3.org/2000/01/rdf-schema#</dd>
+        <dt>xsd</dt>
+        <dd>http://www.w3.org/2001/XMLSchema#</dd>
+    </dl>
+</div>
+<p class="endnote">This HTML document was obtained by processing the OWL
+    ontology source code through <a
+            href="http://www.essepuntato.it/lode">LODE</a>, <em>Live OWL
+        Documentation Environment</em>, developed by <a
+            href="http://www.essepuntato.it">Silvio Peroni</a>.</p></body>
+</html>
+
+

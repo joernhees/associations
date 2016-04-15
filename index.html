@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Human Associations and Linked Data Research">
+    <meta name="author" content="Jörn Hees">
+
+    <title>Associations</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="css/bootstrap.min.css" type="text/css">
+
+    <!-- Custom Fonts -->
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Merriweather:400,300,300italic,400italic,700,700italic,900,900italic' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css" type="text/css">
+
+    <!-- Plugin CSS -->
+    <link rel="stylesheet" href="css/animate.min.css" type="text/css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/creative.css" type="text/css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <style>
+        header, #header-wrapper, #header-wrapper svg, #header-wrapper svg rect {
+            height: 100%;
+            width: 100%;
+        }
+
+        #header-wrapper svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            cursor: move;
+        }
+
+        .header-content {
+            /*background-color: rgba(34, 34, 34, .8);*/
+            text-shadow: 0 0 10px #000;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .header-content .btn {
+            text-shadow: none;
+        }
+
+        .header-content a {
+            pointer-events: all;
+        }
+
+        .explore-nav {
+            position: absolute;
+            right: 10px;
+            bottom: 10px;
+            pointer-events: all;
+            display: none;
+        }
+
+        path.link {
+            fill: none;
+            stroke: #444;
+            stroke-width: 1px;
+        }
+
+        marker {
+            fill: #444;
+            stroke: #444;
+        }
+
+        circle {
+            fill: #666;
+            cursor: pointer;
+        }
+
+        text {
+            fill: #444;
+            font: 10px sans-serif;
+            pointer-events: none;
+        }
+
+    </style>
+</head>
+
+<body id="page-top">
+
+    <nav id="mainNav" class="navbar navbar-default navbar-fixed-top">
+        <div class="container-fluid">
+            <!-- Brand and toggle get grouped for better mobile display -->
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand page-scroll" href="#page-top">Associations</a>
+            </div>
+
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <a class="page-scroll" href="#about">About</a>
+                    </li>
+                    <!--<li>
+                        <a class="page-scroll" href="#publications">Publications</a>
+                    </li>-->
+                    <li>
+                        <a class="page-scroll" href="#vocab">Vocabulary</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#datasets">Datasets</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#contact">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container-fluid -->
+    </nav>
+
+    <header class="bg-dark">
+        <div id="header-wrapper">
+            <div class="header-content">
+                <div class="header-content-inner">
+                    <h1>Associations &amp; Linked Data</h1>
+                    <hr>
+                    <p>A research project to connect Human Associations and the Semantic Web</p>
+                    <p>(drag / scroll to interact)</p>
+                    <a id="explore-btn" href="#page-top" class="btn btn-default btn-xl page-scroll">explore</a>
+                    <a href="#about" class="btn btn-primary btn-xl page-scroll">continue</a>
+                </div>
+            </div>
+        </div>
+        <div class="explore-nav">
+            <a id="explore-restart" href="#page-top" class="btn btn-default btn-xl page-scroll">restart</a>
+            <a id="explore-continue" href="#about" class="btn btn-primary btn-xl page-scroll">continue</a>
+        </div>
+    </header>
+
+    <section id="about">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">What's this all about?</h2>
+                    <hr class="primary">
+                    <p>On this research project page <a href="#contact">we</a> present the results of our research about Human Associations in the Semantic Web.</p>
+                </div>
+            </div>
+        </div>
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-lg-4 col-md-4">
+                    <div class="service-box">
+                        <i class="fa fa-4x fa-link wow bounceIn text-primary"></i>
+                        <h3>Human Associations</h3>
+                        <p class="text-muted">
+                            <a href="https://en.wikipedia.org/wiki/Association_%28psychology%29">Associations</a> are one of the building blocks of human intelligence, thinking, context forming and everyday communication.
+                            They have been the focus of psychological research for a long time and there are excellent datasets such as the <a href="http://www.eat.rl.ac.uk/">Edinburgh Associative Thesaurus (EAT)</a>.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <div class="service-box">
+                        <i class="fa fa-4x fa-globe wow bounceIn text-primary" data-wow-delay=".1s"></i>
+                        <h3>Semantic Web</h3>
+                        <p class="text-muted">
+                            The <a href="https://en.wikipedia.org/wiki/Semantic_Web">Semantic Web</a> is a vision of a World Wide Web for interlinked data, not only web pages for humans.
+                            Following this vision, the <a href="https://en.wikipedia.org/wiki/Linked_data">Linked Data</a> movement has brought us many cool interlinked datasets.
+                            A prominent example of such a dataset is <a href="http://dbpedia.org">DBpedia</a>, which is extracted from <a href="https://en.wikipedia.org/wiki/Wikipedia">Wikipedia</a>.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-4">
+                    <div class="service-box">
+                        <i class="fa fa-4x fa-cogs wow bounceIn text-primary" data-wow-delay=".2s"></i>
+                        <h3>Results</h3>
+                        <p class="text-muted">
+                            After generating an <a href="#vocab">Association Vocabulary</a> we were already able to
+                            <a href="#eatrdf">transform</a> EAT into <a href="https://en.wikipedia.org/wiki/Resource_Description_Framework">RDF</a> and <a href="#eatmapdbp">map</a> its strongest associations to DBpedia entities.
+                            You can <a href="#">interact</a> with the resulting semantic associations between DBpedia entities above or access the generated <a href="#datasets">datasets</a> below.
+                            See our <a href="./papers/Hees_2016_EAT_DBpedia.pdf">paper</a> (under review) for more details.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="vocab">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Association Vocabulary</h2>
+                    <hr class="primary">
+                </div>
+            </div>
+        </div>
+        <div class="container text-center">
+            <div class="row">
+                <div class="col-md-6">
+                    <p class="text-muted">
+                        The generated <a href="/association_vocab">association vocabulary</a> ( <a href="/association_vocab.rdf">RDF</a> | <a href="/association_vocab.owl">OWL</a> | <a href="/association_vocab.ttl">TTL</a> ) has its own <a href="/association_vocab">doc page</a>.
+                    </p>
+                    <p class="text-muted">
+                        It mainly consists of the classes <a href="/association_vocab#Term">Term</a>, for a <a href="/association_vocab#stimulus">stimulus</a> or <a href="/association_vocab#response">response</a>, and <a href="/association_vocab#Association">Association</a> which connects them to their <a href="/association_vocab#count">count</a> and <a href="/association_vocab#frequency">frequency</a>.
+                        It also defines classes <a href="/association_vocab#Mapping">Mapping</a> and <a href="/association_vocab#VerifiedMapping">VerifiedMapping</a> to map associations from one dataset to another with the <a href="/association_vocab#mappedTo">mapped to</a> property.
+                    </p>
+                    <p class="text-muted">
+                        An example for all this can be found in the following drawing.
+                        See our <a href="./papers/Hees_2016_EAT_DBpedia.pdf">paper</a> (under review) for more details.
+                    </p>
+                </div>
+                <div class="col-md-6">
+                    <img class="img-responsive center-block" src="./img/associations.png">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="datasets">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Datasets</h2>
+                    <hr class="primary">
+                    <p class="text-muted">
+                        See our <a href="./papers/Hees_2016_EAT_DBpedia.pdf">paper</a> (under review) for more details.
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center">
+                    <div class="service-box">
+                        <i class="fa fa-4x fa-cog wow bounceIn text-primary"></i>
+                        <h3 id="eatrdf">EAT as RDF</h3>
+                        <p class="text-muted">
+                            As the transformation of all EAT associations into RDF creates nearly 1.7 M triples, we only provide, at the moment, a dump of this dataset (<a
+                                href="./eat.nt.gz">eat.nt.gz</a> (gzipped <a
+                                href="http://www.w3.org/TR/n-triples/">N-Triples</a>)).
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6 text-center">
+                    <div class="service-box">
+                        <i class="fa fa-4x fa-exchange wow bounceIn text-primary" data-wow-delay=".1s"></i>
+                        <h3 id="eatmapdbp">Mapping EAT to DBpedia</h3>
+                        <p class="text-muted">
+                            The 790 manually verified mappings of strong EAT associations to semantic associations between DBpedia entities are provided as dereferenceable <a href="./mapping_eat_dbpedia.rdf">RDF</a>, as <a href="./mapping_eat_dbpedia.tsv">TSV</a> and <a href="mapping_eat_dbpedia.nt.gz">dump file</a> as well.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contact" class="bg-dark">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 text-center">
+                    <h2 class="section-heading">Get In Touch!</h2>
+                    <hr class="primary">
+                    <p>Have a question, some idea, feedback or want to collaborate?</p>
+                    <p>Just drop us a line, we don't bite ;)</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    <i class="fa fa-envelope-o fa-3x wow bounceIn"></i>
+                    <p><img src="./img/m.png"></p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <i class="fa fa-user fa-3x wow bounceIn" data-wow-delay=".1s"></i>
+                    <p><a href="http://joernhees.de/blog/about">Jörn Hees</a><br>(main contact)</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <i class="fa fa-users fa-3x wow bounceIn" data-wow-delay=".2s"></i>
+                    <p><a href="http://km.dfki.de/">DFKI Knowledge Management</a><br>(our research group)</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Plugin JavaScript -->
+    <script src="js/jquery.easing.min.js"></script>
+    <script src="js/jquery.fittext.js"></script>
+    <script src="js/wow.min.js"></script>
+
+    <!-- Custom Theme JavaScript -->
+    <script src="js/creative.js"></script>
+
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+    <script>
+        if (!window.d3) {
+            console.warn("d3js.org not reachable");
+            document.write('<script src="js/d3.v3.min.js">\x3C/script>');
+        }
+    </script>
+<script>
+    var _explore_state = false;
+
+    function explore() {
+        if (!_explore_state) {
+            $(".header-content").fadeTo('fast', 0, function() {
+                $(this).css('visibility', 'hidden')
+            });
+            $(".explore-nav").show();
+            _explore_state = true;
+        }
+    }
+
+    function unexplore() {
+        if (_explore_state) {
+            $(".header-content").css('visibility', 'visible').fadeTo('fast', 1);
+            $(".explore-nav").hide();
+            _explore_state = false;
+        }
+    }
+
+    $("#explore-btn").click(function() {
+        if($(window).scrollTop() == 0) {
+            explore();
+        } else {
+            $('html, body').animate({scrollTop: 0}, 0, function() {explore();});
+        }
+    });
+    $("#explore-continue").click(unexplore);
+    $("#explore-restart").click(unexplore);
+    $(window).scroll(function () {
+        if ($(this).scrollTop() == 0) {
+            unexplore();
+        }
+        if (_explore_state && $(this).scrollTop() > $(window).height()) {
+            unexplore();
+        }
+    });
+
+    function show(links) {
+        var nodes = {};
+
+        // Compute the distinct nodes from the links.
+        links.forEach(function(link) {
+            var source = decodeURIComponent(link[0]);
+            var target = decodeURIComponent(link[1]);
+            link.source = nodes[source] ||
+                (nodes[source] = {name: source});
+            link.target = nodes[target] ||
+                (nodes[target] = {name: target});
+            link.value = 1;
+        });
+
+        var width;
+        var height;
+
+        function get_window_size() {
+            width = $(window).width();
+            height = $(window).height();
+        }
+        $(window).resize(function () {
+            get_window_size();
+            svg.attr("width", width).attr("height", height);
+            rect.attr("width", width).attr("height", height);
+            force.size([width, height]).start();
+            console.log('new window size: ' + width + 'x' + height);
+        });
+        get_window_size();
+
+        var zoom = d3.behavior.zoom()
+            .scaleExtent([0.1, 10])
+            .on("zoom", zoomed);
+
+        function zoomed() {
+            explore();
+            container.attr(
+                "transform",
+                "translate(" + d3.event.translate +
+                ")scale(" + d3.event.scale + ")"
+            );
+        }
+
+        var svg = d3.select("#header-wrapper")
+            .append("svg")
+                .attr("width", width)
+                .attr("height", height);
+        var svgg = svg.append("g")
+                //.attr("transform", "translate(0, 0)")
+                .call(zoom);
+
+        var rect = svgg.append("rect")
+            .attr("width", width)
+            .attr("height", height)
+            .style("fill", "none")
+            .attr("class", "drag")
+            .style("pointer-events", "all");
+
+        var container = svgg.append("g");
+
+
+
+        // actually do the force layout
+        var force = d3.layout.force()
+            .nodes(d3.values(nodes))
+            .links(links)
+            .size([width, height])
+            .linkDistance(30)
+            .charge(-200)
+            .gravity(0.3)
+            .on("tick", tick);
+
+        // delay force layout till document ready
+        $(force.start);
+
+        // build the arrow.
+        container.append("svg:defs").selectAll("marker").data(["end"])
+            .enter().append("svg:marker")
+                .attr("id", String)
+                .attr("viewBox", "0 -5 10 10")
+                .attr("refX", 15)
+                .attr("refY", -1.5)
+                .attr("markerWidth", 6)
+                .attr("markerHeight", 6)
+                .attr("orient", "auto")
+                .append("svg:path")
+                    .attr("d", "M0,-5L10,0L0,5");
+
+        // add the links and the arrows
+        var path = container.append("svg:g").selectAll("path")
+                .data(force.links())
+            .enter().append("svg:path")
+                .attr("class", "link")
+                .attr("marker-end", "url(#end)");
+
+        // make a force drag behavior that stops propagating events up to the
+        // zoom and pan behavior
+        var drag = force.drag().on("dragstart", function() {
+            explore();
+            d3.event.sourceEvent.stopPropagation();
+        });
+
+        // define the nodes
+        var node = container.selectAll(".node").data(force.nodes())
+            .enter().append("g")
+                .attr("class", "node")
+                .call(drag);
+
+        // add the nodes
+        node.append("circle")
+            .attr("r", 5);
+
+        // add the text
+        node.append("text")
+            .attr("x", 12)
+            .attr("dy", ".35em")
+            .text(function(d) { return d.name; });
+
+        // auto adapt frame-rate
+        var tick_count = -1;
+        var ticks_per_draw = 4;
+        var MAX_TICKS_PER_DRAW = 20;
+        var TARGET_MS_PER_DRAW = 31;  // ~32 fps
+        var avg_tick_time = 30;  // rough estimate over 10 ticks
+        var last_tick_time = null;
+
+        force.on('start', function() { last_tick_time = null ; });
+        force.on('end', tick_draw);
+
+        function tick() {
+            ++tick_count;
+            var _current_tick_time = new Date().getTime();
+            if (last_tick_time === null) {
+                // on startup fake last time from avg
+                last_tick_time = _current_tick_time - avg_tick_time;
+            }
+            var ms = _current_tick_time - last_tick_time;
+            avg_tick_time = (avg_tick_time * 9 + ms) / 10;
+            // console.log('tick took ' + ms + 'ms, avg: ' + avg_tick_time + 'ms');
+            last_tick_time = _current_tick_time;
+            if (avg_tick_time > TARGET_MS_PER_DRAW * 2 && ticks_per_draw < MAX_TICKS_PER_DRAW) {
+                ++ticks_per_draw;
+                console.log('increased ticks_per_draw to ' + ticks_per_draw);
+            } else {
+                if (avg_tick_time < TARGET_MS_PER_DRAW * 0.9 && ticks_per_draw > 1) {
+                    --ticks_per_draw;
+                    console.log('decreased ticks_per_draw to ' + ticks_per_draw);
+                }
+            }
+            if (tick_count % ticks_per_draw > 0) {
+                return;
+            }
+            tick_draw();
+        }
+
+        // tick_draw updates node pos and add the curvy lines
+        function tick_draw() {
+            path.attr("d", function(d) {
+                var dx = d.target.x - d.source.x,
+                    dy = d.target.y - d.source.y,
+                    dr = Math.sqrt(dx * dx + dy * dy);
+                return "M" +
+                    d.source.x + "," +
+                    d.source.y + "A" +
+                    dr + "," + dr + " 0 0,1 " +
+                    d.target.x + "," +
+                    d.target.y;
+            });
+
+            node.attr("transform", function(d) {
+                    return "translate(" + d.x + "," + d.y + ")"; });
+        }
+    }
+    d3.json("association_links.json", function(error, links) {
+        show(links);
+    });
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,118 @@
+@prefix : <http://associations.joernhees.de/association_vocab#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@base <http://associations.joernhees.de/association_vocab> .
+
+<http://associations.joernhees.de/association_vocab>
+  rdf:type owl:Ontology ;
+  owl:versionInfo "1.0.0" ;
+  owl:versionIRI <http://associations.joernhees.de/association_vocab/1.0.0> .
+
+
+
+#################################################################
+#
+#    Classes
+#
+#################################################################
+
+
+###  http://associations.joernhees.de/association_vocab#Term
+
+:Term rdf:type owl:Class ;
+  rdfs:label "Term" ;
+  rdfs:comment "A class representing an association term that can either occur as stimulus or as response of an association." .
+
+
+###  http://associations.joernhees.de/association_vocab#Association
+
+:Association rdf:type owl:Class ;
+  rdfs:label "Association" ;
+  rdfs:comment "An association having a stimulus and a respone, a count and frequency." .
+
+
+###  http://associations.joernhees.de/association_vocab#Mapping
+
+:Mapping rdf:type owl:Class ;
+  rdfs:label "Mapping" ;
+  rdfs:comment "A mapping in the context of associations. If an association is an instance of this class it typically wasn't directly created on the dataset of the stimulus and response but was mapped to the entities from another dataset (see the mappedTo property)." .
+
+
+###  http://associations.joernhees.de/association_vocab#VerifiedMapping
+
+:VerifiedMapping rdf:type owl:Class ;
+  rdfs:subClassOf :Mapping ;
+  rdfs:label "VerifiedMapping" ;
+  rdfs:comment "A mapping that has been manually verified." .
+
+
+
+#################################################################
+#
+#    Object Properties
+#
+#################################################################
+
+
+###  http://associations.joernhees.de/association_vocab#stimulus
+
+:stimulus rdf:type owl:ObjectProperty ;
+  rdfs:label "stimulus" ;
+  rdfs:comment "The stimulus term of an association." ;
+  rdfs:domain :Association ;
+  rdfs:range :Term .
+
+
+###  http://associations.joernhees.de/association_vocab#response
+
+:response rdf:type owl:ObjectProperty ;
+  rdfs:label "response" ;
+  rdfs:comment "The response term of an association." ;
+  rdfs:domain :Association ;
+  rdfs:range :Term .
+
+
+###  http://associations.joernhees.de/association_vocab#mappedTo
+
+:mappedTo rdf:type owl:ObjectProperty ;
+  rdfs:label "mapped to" ;
+  rdfs:comment "A mapping from an association in one dataset to an equivalent one in another." ;
+  rdfs:domain :Association ;
+  rdfs:range :Association .
+
+
+
+#################################################################
+#
+#    Data properties
+#
+#################################################################
+
+
+###  http://associations.joernhees.de/association_vocab#count
+
+:count rdf:type owl:DatatypeProperty ;
+  rdfs:label "count" ;
+  rdfs:comment "The count how often this association occurred." ;
+  rdfs:domain :Association ;
+  rdfs:range xsd:positiveInteger .
+
+
+###  http://associations.joernhees.de/association_vocab#frequency
+
+:frequency rdf:type owl:DatatypeProperty ;
+  rdfs:label "frequency" ;
+  rdfs:comment "The relative count of this association wrt. all associations of the stimulus." ;
+  rdfs:domain :Association ;
+  rdfs:range [
+    rdf:type rdfs:Datatype ;
+    owl:onDatatype xsd:double ;
+    owl:withRestrictions (
+        [ xsd:maxInclusive "1.0"^^xsd:double ]
+        [ xsd:minExclusive "0.0"^^xsd:double ]
+      )
+    ] .
+

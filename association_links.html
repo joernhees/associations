@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Associations</title>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script>
+        if (!window.jQuery) {
+            console.warn("googleapis not reachable");
+            document.write('<script src="libs/jquery-1.11.3.min.js">\x3C/script>');
+        }
+    </script>
+
+    <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+    <script>
+        if (!window.d3) {
+            console.warn("d3js.org not reachable");
+            document.write('<script src="libs/d3.v3.min.js">\x3C/script>');
+        }
+    </script>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+            /*background-color: #333;*/
+        }
+
+        html {
+            overflow: hidden;
+        }
+
+        svg {
+            height: 100%;
+            width: 100%;
+        }
+
+        path.link {
+            fill: none;
+            stroke: #666;
+            stroke-width: 1px;
+        }
+
+        circle {
+            fill: #ccc;
+            stroke: #fff;
+            stroke-width: 1px;
+        }
+
+        text {
+            fill: #000;
+            font: 10px sans-serif;
+            pointer-events: none;
+        }
+
+    </style>
+</head>
+<body>
+<script>
+    function show(links) {
+        var nodes = {};
+
+        // Compute the distinct nodes from the links.
+        links.forEach(function(link) {
+            var source = decodeURIComponent(link[0]);
+            var target = decodeURIComponent(link[1]);
+            link.source = nodes[source] ||
+                (nodes[source] = {name: source});
+            link.target = nodes[target] ||
+                (nodes[target] = {name: target});
+            link.value = 1;
+        });
+
+        var width;
+        var height;
+
+        function resize() {
+            width = $(window).width();
+            height = $(window).height();
+        }
+        $(window).resize(function () {
+            resize();
+            force.size([width, height]).start();
+        });
+        resize();
+
+        var zoom = d3.behavior.zoom()
+            .scaleExtent([0.1, 10])
+            .on("zoom", zoomed);
+
+        function zoomed() {
+            container.attr(
+                "transform",
+                "translate(" + d3.event.translate +
+                ")scale(" + d3.event.scale + ")"
+            );
+        }
+
+        var svg = d3.select("body")
+            .append("svg")
+                .attr("width", width)
+                .attr("height", height)
+            .append("g")
+                //.attr("transform", "translate(0, 0)")
+                .call(zoom);
+
+        var rect = svg.append("rect")
+            .attr("width", width)
+            .attr("height", height)
+            .style("fill", "none")
+            .attr("class", "drag")
+            .style("pointer-events", "all");
+
+        var container = svg.append("g");
+
+
+
+        // actually do the force layout
+        var force = d3.layout.force()
+            .nodes(d3.values(nodes))
+            .links(links)
+            .size([width, height])
+            .linkDistance(30)
+            .charge(-200)
+            .gravity(0.3)
+            .on("tick", tick)
+            .start();
+
+        // build the arrow.
+        container.append("svg:defs").selectAll("marker").data(["end"])
+            .enter().append("svg:marker")
+                .attr("id", String)
+                .attr("viewBox", "0 -5 10 10")
+                .attr("refX", 15)
+                .attr("refY", -1.5)
+                .attr("markerWidth", 6)
+                .attr("markerHeight", 6)
+                .attr("orient", "auto")
+                .append("svg:path")
+                    .attr("d", "M0,-5L10,0L0,5");
+
+        // add the links and the arrows
+        var path = container.append("svg:g").selectAll("path")
+                .data(force.links())
+            .enter().append("svg:path")
+                .attr("class", "link")
+                .attr("marker-end", "url(#end)");
+
+        // make a force drag behavior that stops propagating events up to the
+        // zoom and pan behavior
+        var drag = force.drag().on("dragstart", function() {
+            d3.event.sourceEvent.stopPropagation(); });
+
+        // define the nodes
+        var node = container.selectAll(".node").data(force.nodes())
+            .enter().append("g")
+                .attr("class", "node")
+                .call(drag);
+
+        // add the nodes
+        node.append("circle")
+            .attr("r", 5);
+
+        // add the text
+        node.append("text")
+            .attr("x", 12)
+            .attr("dy", ".35em")
+            .text(function(d) { return d.name; });
+
+        // tick updates node pos and add the curvy lines
+        function tick() {
+            path.attr("d", function(d) {
+                var dx = d.target.x - d.source.x,
+                    dy = d.target.y - d.source.y,
+                    dr = Math.sqrt(dx * dx + dy * dy);
+                return "M" +
+                    d.source.x + "," +
+                    d.source.y + "A" +
+                    dr + "," + dr + " 0 0,1 " +
+                    d.target.x + "," +
+                    d.target.y;
+            });
+
+            node.attr("transform", function(d) {
+                    return "translate(" + d.x + "," + d.y + ")"; });
+        }
+    }
+    d3.json("association_links.json", function(error, links) {
+        show(links);
+    });
+</script>
+</body>
+</html>

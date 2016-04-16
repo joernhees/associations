@@ -10,16 +10,16 @@
 ]>
 
 
-<rdf:RDF xmlns="http://associations.joernhees.de/association_vocab#"
-     xml:base="http://associations.joernhees.de/association_vocab"
+<rdf:RDF xmlns="https://w3id.org/associations/vocab#"
+     xml:base="https://w3id.org/associations/vocab"
      xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
      xmlns:owl="http://www.w3.org/2002/07/owl#"
      xmlns:xml="http://www.w3.org/XML/1998/namespace"
      xmlns:xsd="http://www.w3.org/2001/XMLSchema#"
      xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#">
-    <owl:Ontology rdf:about="http://associations.joernhees.de/association_vocab">
+    <owl:Ontology rdf:about="https://w3id.org/associations/vocab">
         <owl:versionInfo>1.0.0</owl:versionInfo>
-        <owl:versionIRI rdf:resource="http://associations.joernhees.de/association_vocab/1.0.0"/>
+        <owl:versionIRI rdf:resource="https://w3id.org/associations/vocab/1.0.0"/>
     </owl:Ontology>
     
 
@@ -35,35 +35,35 @@
     
 
 
-    <!-- http://associations.joernhees.de/association_vocab#mappedTo -->
+    <!-- https://w3id.org/associations/vocab#mappedTo -->
 
-    <owl:ObjectProperty rdf:about="http://associations.joernhees.de/association_vocab#mappedTo">
+    <owl:ObjectProperty rdf:about="https://w3id.org/associations/vocab#mappedTo">
         <rdfs:label>mapped to</rdfs:label>
         <rdfs:comment>A mapping from an association in one dataset to an equivalent one in another.</rdfs:comment>
-        <rdfs:range rdf:resource="http://associations.joernhees.de/association_vocab#Association"/>
-        <rdfs:domain rdf:resource="http://associations.joernhees.de/association_vocab#Association"/>
+        <rdfs:range rdf:resource="https://w3id.org/associations/vocab#Association"/>
+        <rdfs:domain rdf:resource="https://w3id.org/associations/vocab#Association"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://associations.joernhees.de/association_vocab#response -->
+    <!-- https://w3id.org/associations/vocab#response -->
 
-    <owl:ObjectProperty rdf:about="http://associations.joernhees.de/association_vocab#response">
+    <owl:ObjectProperty rdf:about="https://w3id.org/associations/vocab#response">
         <rdfs:label>response</rdfs:label>
         <rdfs:comment>The response term of an association.</rdfs:comment>
-        <rdfs:domain rdf:resource="http://associations.joernhees.de/association_vocab#Association"/>
-        <rdfs:range rdf:resource="http://associations.joernhees.de/association_vocab#Term"/>
+        <rdfs:domain rdf:resource="https://w3id.org/associations/vocab#Association"/>
+        <rdfs:range rdf:resource="https://w3id.org/associations/vocab#Term"/>
     </owl:ObjectProperty>
     
 
 
-    <!-- http://associations.joernhees.de/association_vocab#stimulus -->
+    <!-- https://w3id.org/associations/vocab#stimulus -->
 
-    <owl:ObjectProperty rdf:about="http://associations.joernhees.de/association_vocab#stimulus">
+    <owl:ObjectProperty rdf:about="https://w3id.org/associations/vocab#stimulus">
         <rdfs:label>stimulus</rdfs:label>
         <rdfs:comment>The stimulus term of an association.</rdfs:comment>
-        <rdfs:domain rdf:resource="http://associations.joernhees.de/association_vocab#Association"/>
-        <rdfs:range rdf:resource="http://associations.joernhees.de/association_vocab#Term"/>
+        <rdfs:domain rdf:resource="https://w3id.org/associations/vocab#Association"/>
+        <rdfs:range rdf:resource="https://w3id.org/associations/vocab#Term"/>
     </owl:ObjectProperty>
     
 
@@ -79,23 +79,23 @@
     
 
 
-    <!-- http://associations.joernhees.de/association_vocab#count -->
+    <!-- https://w3id.org/associations/vocab#count -->
 
-    <owl:DatatypeProperty rdf:about="http://associations.joernhees.de/association_vocab#count">
+    <owl:DatatypeProperty rdf:about="https://w3id.org/associations/vocab#count">
         <rdfs:label>count</rdfs:label>
         <rdfs:comment>The count how often this association occurred.</rdfs:comment>
-        <rdfs:domain rdf:resource="http://associations.joernhees.de/association_vocab#Association"/>
+        <rdfs:domain rdf:resource="https://w3id.org/associations/vocab#Association"/>
         <rdfs:range rdf:resource="&xsd;positiveInteger"/>
     </owl:DatatypeProperty>
     
 
 
-    <!-- http://associations.joernhees.de/association_vocab#frequency -->
+    <!-- https://w3id.org/associations/vocab#frequency -->
 
-    <owl:DatatypeProperty rdf:about="http://associations.joernhees.de/association_vocab#frequency">
+    <owl:DatatypeProperty rdf:about="https://w3id.org/associations/vocab#frequency">
         <rdfs:label>frequency</rdfs:label>
         <rdfs:comment>The relative count of this association wrt. all associations of the stimulus.</rdfs:comment>
-        <rdfs:domain rdf:resource="http://associations.joernhees.de/association_vocab#Association"/>
+        <rdfs:domain rdf:resource="https://w3id.org/associations/vocab#Association"/>
         <rdfs:range>
             <rdfs:Datatype>
                 <owl:onDatatype rdf:resource="&xsd;double"/>
@@ -124,38 +124,38 @@
     
 
 
-    <!-- http://associations.joernhees.de/association_vocab#Association -->
+    <!-- https://w3id.org/associations/vocab#Association -->
 
-    <owl:Class rdf:about="http://associations.joernhees.de/association_vocab#Association">
+    <owl:Class rdf:about="https://w3id.org/associations/vocab#Association">
         <rdfs:label>Association</rdfs:label>
         <rdfs:comment>An association having a stimulus and a respone, a count and frequency.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- http://associations.joernhees.de/association_vocab#Mapping -->
+    <!-- https://w3id.org/associations/vocab#Mapping -->
 
-    <owl:Class rdf:about="http://associations.joernhees.de/association_vocab#Mapping">
+    <owl:Class rdf:about="https://w3id.org/associations/vocab#Mapping">
         <rdfs:label>Mapping</rdfs:label>
         <rdfs:comment>A mapping in the context of associations. If an association is an instance of this class it typically wasn&apos;t directly created on the dataset of the stimulus and response but was mapped to the entities from another dataset (see the mappedTo property).</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- http://associations.joernhees.de/association_vocab#Term -->
+    <!-- https://w3id.org/associations/vocab#Term -->
 
-    <owl:Class rdf:about="http://associations.joernhees.de/association_vocab#Term">
+    <owl:Class rdf:about="https://w3id.org/associations/vocab#Term">
         <rdfs:label>Term</rdfs:label>
         <rdfs:comment>A class representing an association term that can either occur as stimulus or as response of an association.</rdfs:comment>
     </owl:Class>
     
 
 
-    <!-- http://associations.joernhees.de/association_vocab#VerifiedMapping -->
+    <!-- https://w3id.org/associations/vocab#VerifiedMapping -->
 
-    <owl:Class rdf:about="http://associations.joernhees.de/association_vocab#VerifiedMapping">
+    <owl:Class rdf:about="https://w3id.org/associations/vocab#VerifiedMapping">
         <rdfs:label>VerifiedMapping</rdfs:label>
-        <rdfs:subClassOf rdf:resource="http://associations.joernhees.de/association_vocab#Mapping"/>
+        <rdfs:subClassOf rdf:resource="https://w3id.org/associations/vocab#Mapping"/>
         <rdfs:comment>A mapping that has been manually verified.</rdfs:comment>
     </owl:Class>
 </rdf:RDF>

@@ -114,14 +114,17 @@
                     <li>
                         <a class="page-scroll" href="#about">About</a>
                     </li>
-                    <!--<li>
-                        <a class="page-scroll" href="#publications">Publications</a>
-                    </li>-->
                     <li>
                         <a class="page-scroll" href="#vocab">Vocabulary</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="#datasets">Datasets</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#gp_learner">Graph Pattern Learner</a>
+                    </li>
+                    <li>
+                        <a class="page-scroll" href="#publications">Publications</a>
                     </li>
                     <li>
                         <a class="page-scroll" href="#contact">Contact</a>
@@ -164,36 +167,47 @@
         </div>
         <div class="container text-center">
             <div class="row">
-                <div class="col-lg-4 col-md-4">
+                <div class="col-lg-3 col-md-3">
                     <div class="service-box">
                         <i class="fa fa-4x fa-link wow bounceIn text-primary"></i>
                         <h3>Human Associations</h3>
-                        <p class="text-muted">
-                            <a href="https://en.wikipedia.org/wiki/Association_%28psychology%29">Associations</a> are one of the building blocks of human intelligence, thinking, context forming and everyday communication.
-                            They have been the focus of psychological research for a long time and there are excellent datasets such as the <a href="http://www.eat.rl.ac.uk/">Edinburgh Associative Thesaurus (EAT)</a>.
+                        <p>
+                            <a href="https://en.wikipedia.org/wiki/Association_%28psychology%29" target="_blank">Associations</a> are one of the building blocks of human intelligence, thinking, context forming and everyday communication.
+                            They have been the focus of psychological research for a long time and there are excellent datasets such as the <a href="http://www.eat.rl.ac.uk/" target="_blank">Edinburgh Associative Thesaurus (EAT)</a>.
                         </p>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-4">
+                <div class="col-lg-3 col-md-3">
                     <div class="service-box">
                         <i class="fa fa-4x fa-globe wow bounceIn text-primary" data-wow-delay=".1s"></i>
                         <h3>Semantic Web</h3>
-                        <p class="text-muted">
-                            The <a href="https://en.wikipedia.org/wiki/Semantic_Web">Semantic Web</a> is a vision of a World Wide Web for interlinked data, not only web pages for humans.
-                            Following this vision, the <a href="https://en.wikipedia.org/wiki/Linked_data">Linked Data</a> movement has brought us many cool interlinked datasets.
-                            A prominent example of such a dataset is <a href="http://dbpedia.org">DBpedia</a>, which is extracted from <a href="https://en.wikipedia.org/wiki/Wikipedia">Wikipedia</a>.
+                        <p>
+                            The <a href="https://en.wikipedia.org/wiki/Semantic_Web" target="_blank">Semantic Web</a> is a vision of a World Wide Web for interlinked data, not only web pages for humans.
+                            Following this vision, the <a href="https://en.wikipedia.org/wiki/Linked_data" target="_blank">Linked Data</a> movement has brought us many cool interlinked datasets.
+                            A prominent example of such a dataset is <a href="http://dbpedia.org" target="_blank">DBpedia</a>, which is extracted from <a href="https://en.wikipedia.org/wiki/Wikipedia" target="_blank">Wikipedia</a>.
                         </p>
                     </div>
                 </div>
-                <div class="col-lg-4 col-md-4">
+                <div class="col-lg-3 col-md-3">
+                    <div class="service-box">
+                        <i class="fa fa-4x fa-database wow bounceIn text-primary" data-wow-delay=".2s"></i>
+                        <h3>Datasets</h3>
+                        <p>
+                            With the help of an <a href="#vocab">Association Vocabulary</a> we were able to
+                            <a href="#eatrdf">transform</a> EAT into <a href="https://en.wikipedia.org/wiki/Resource_Description_Framework" target="_blank">RDF</a>.
+                            We already <a href="#eatmapdbp">mapped</a> the strongest associations to DBpedia entities.
+                            You can <a href="#">interact</a> with the resulting <b>semantic associations</b> between DBpedia entities above or access the generated <a href="#datasets">datasets</a> below.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3">
                     <div class="service-box">
                         <i class="fa fa-4x fa-cogs wow bounceIn text-primary" data-wow-delay=".2s"></i>
-                        <h3>Results</h3>
-                        <p class="text-muted">
-                            After generating an <a href="#vocab">Association Vocabulary</a> we were already able to
-                            <a href="#eatrdf">transform</a> EAT into <a href="https://en.wikipedia.org/wiki/Resource_Description_Framework">RDF</a> and <a href="#eatmapdbp">map</a> its strongest associations to DBpedia entities.
-                            You can <a href="#">interact</a> with the resulting semantic associations between DBpedia entities above or access the generated <a href="#datasets">datasets</a> below.
-                            See our <a href="https://w3id.org/associations/papers/Hees_2016_EAT_DBpedia.pdf">paper</a> (under review) for more details.
+                        <h3>Graph Patterns</h3>
+                        <p>
+                            We also extracted graph patterns for these semantic associations from DBpedia.
+                            We developed and applied an <a href="#gp_learner">evolutionary graph pattern learner</a> which is able to learn SPARQL patterns for a given list of source-target-pairs.
+                            You can find a <a href="#gp_learner">visualisation of its results</a> below.
                         </p>
                     </div>
                 </div>
@@ -213,16 +227,22 @@
         <div class="container text-center">
             <div class="row">
                 <div class="col-md-6">
-                    <p class="text-muted">
-                        The generated <a href="https://w3id.org/associations/vocab">association vocabulary</a> ( <a href="https://w3id.org/associations/vocab.rdf">RDF</a> | <a href="https://w3id.org/associations/vocab.owl">OWL</a> | <a href="https://w3id.org/associations/vocab.ttl">TTL</a> ) has its own <a href="https://w3id.org/associations/vocab">doc page</a>.
+                    <p>
+                        The generated <a href="https://w3id.org/associations/vocab" target="_blank">association vocabulary</a> ( <a href="https://w3id.org/associations/vocab.rdf" target="_blank">RDF</a> | <a href="https://w3id.org/associations/vocab.owl" target="_blank">OWL</a> | <a href="https://w3id.org/associations/vocab.ttl" target="_blank">TTL</a> ) has its own <a href="https://w3id.org/associations/vocab">doc page</a>.
                     </p>
-                    <p class="text-muted">
-                        It mainly consists of the classes <a href="https://w3id.org/associations/vocab#Term">Term</a>, for a <a href="https://w3id.org/associations/vocab#stimulus">stimulus</a> or <a href="https://w3id.org/associations/vocab#response">response</a>, and <a href="https://w3id.org/associations/vocab#Association">Association</a> which connects them to their <a href="https://w3id.org/associations/vocab#count">count</a> and <a href="https://w3id.org/associations/vocab#frequency">frequency</a>.
-                        It also defines classes <a href="https://w3id.org/associations/vocab#Mapping">Mapping</a> and <a href="https://w3id.org/associations/vocab#VerifiedMapping">VerifiedMapping</a> to map associations from one dataset to another with the <a href="https://w3id.org/associations/vocab#mappedTo">mapped to</a> property.
+                    <p>
+                        It mainly consists of the classes <a href="https://w3id.org/associations/vocab#Term" target="_blank">Term</a>, for a <a href="https://w3id.org/associations/vocab#stimulus" target="_blank">stimulus</a> or <a href="https://w3id.org/associations/vocab#response" target="_blank">response</a>, and <a href="https://w3id.org/associations/vocab#Association" target="_blank">Association</a> which connects them to their <a href="https://w3id.org/associations/vocab#count" target="_blank">count</a> and <a href="https://w3id.org/associations/vocab#frequency" target="_blank">frequency</a>.
+                        It also defines classes <a href="https://w3id.org/associations/vocab#Mapping" target="_blank">Mapping</a> and <a href="https://w3id.org/associations/vocab#VerifiedMapping" target="_blank">VerifiedMapping</a> to map associations from one dataset to another with the <a href="https://w3id.org/associations/vocab#mappedTo" target="_blank">mapped to</a> property.
                     </p>
-                    <p class="text-muted">
+                    <p>
                         An example for all this can be found in the following drawing.
-                        See our <a href="https://w3id.org/associations/papers/Hees_2016_EAT_DBpedia.pdf">paper</a> (under review) for more details.
+                        In the middle you can see the stimulus "pupil", which can lead to the responses "eye" (left) and "school" (right).
+                        Both associations are mapped to a corresponding association node which also contains information about ther counts and frequencies.
+                        The one on the left further was mapped to a semantic association between the two DBpedia entities <a href="http://dbpedia.org/resource/Pupil" target="_blank">dbr:Pupil</a> and <a href="http://dbpedia.org/resource/Eye" target="_blank">dbr:Eye</a>.
+                        As you can see in this process the ambiguous term "pupil" was disambiguated to the right semantic entity <a href="http://dbpedia.org/resource/Pupil" target="_blank">dbr:Pupil</a>.
+                    </p>
+                    <p>
+                        See our papers in the <a href="#publications">publications</a> section for more details.
                     </p>
                 </div>
                 <div class="col-md-6">
@@ -238,8 +258,8 @@
                 <div class="col-lg-12 text-center">
                     <h2 class="section-heading">Datasets</h2>
                     <hr class="primary">
-                    <p class="text-muted">
-                        See our <a href="https://w3id.org/associations/papers/Hees_2016_EAT_DBpedia.pdf">paper</a> (under review) for more details.
+                    <p>
+                        Further information in the <a href="#publications">publications</a> section.
                     </p>
                 </div>
             </div>
@@ -250,10 +270,11 @@
                     <div class="service-box">
                         <i class="fa fa-4x fa-cog wow bounceIn text-primary"></i>
                         <h3 id="eatrdf">EAT as RDF</h3>
-                        <p class="text-muted">
-                            As the transformation of all EAT associations into RDF creates nearly 1.7 M triples, we only provide, at the moment, a dump of this dataset (<a
-                                href="https://w3id.org/associations/eat.nt.gz">eat.nt.gz</a> (gzipped <a
-                                href="http://www.w3.org/TR/n-triples/">N-Triples</a>)).
+                        <p>
+                            As the transformation of all EAT associations into RDF creates nearly 1.7 M triples, we only provide, at the moment, a dump of this dataset.
+                        </p>
+                        <p>
+                            (<a href="https://w3id.org/associations/eat.nt.gz" target="_blank">eat.nt.gz</a> (gzipped <a href="http://www.w3.org/TR/n-triples/" target="_blank">N-Triples</a>))
                         </p>
                     </div>
                 </div>
@@ -261,8 +282,115 @@
                     <div class="service-box">
                         <i class="fa fa-4x fa-exchange wow bounceIn text-primary" data-wow-delay=".1s"></i>
                         <h3 id="eatmapdbp">Mapping EAT to DBpedia</h3>
+                        <p>
+                            The 790 manually verified mappings of strong EAT associations to semantic associations between DBpedia entities are provided as dereferenceable <a href="https://w3id.org/associations/mapping_eat_dbpedia.rdf" target="_blank">RDF</a>, as <a href="https://w3id.org/associations/mapping_eat_dbpedia.tsv" target="_blank">TSV</a> and <a href="https://w3id.org/associations/mapping_eat_dbpedia.nt.gz" target="_blank">dump file</a> as well.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="gp_learner">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Graph Pattern Learner</h2>
+                    <hr class="primary">
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center">
+                    <div class="service-box">
+                        <i class="fa fa-4x fa-cogs wow bounceIn text-primary"></i>
+                        <h3 id="gp_learner_source">Evolutionary Algorithm</h3>
+                        <p>
+                            In order to find graph patterns for associations in DBpedia, we developed an evolutionary graph pattern learner (see <a href="#paper_gplearner">paper</a>).
+                            It takes an input list of source-target-pairs (such as the stimulus-response-pairs of the semantic associations above) and learns SPARQL queries for them from a given SPARQL endpoint.
+                        </p>
+                        <p>
+                            Given a source node, the learned SPARQL patterns can be used to predict a list of target nodes and by this simulate human associating based on DBpedia.
+                        </p>
+                        <p>
+                            The source-code for our algorithm can be found on <a href="https://github.com/RDFLib/graph-pattern-learner" target="_blank">GitHub</a>.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6 text-center">
+                    <div class="service-box">
+                        <i class="fa fa-4x fa-connectdevelop wow bounceIn text-primary" data-wow-delay=".1s"></i>
+                        <h3 id="gp_learner_results">Results</h3>
+                        <p>
+                            We ran our pattern learner against a <a href="https://joernhees.de/blog/2015/11/23/setting-up-a-linked-data-mirror-from-rdf-dumps-dbpedia-2015-04-freebase-wikidata-linkedgeodata-with-virtuso-7-2-1-and-docker-optional/" target="_blank">local Linked Data endpoint</a> filled with 7.9 G triples from the heart of the <a href="http://lod-cloud.net" target="_blank">LOD-Cloud</a>.
+                        </p>
+                        <p>
+                             The resulting learned graph patterns are available in an <a href="gp_learner/vis/visualise.html" target="_blank">interactive visualisation</a>:
+                        </p>
+                        <a href="gp_learner/vis/visualise.html" target="_blank"><img style="width:100%" src="img/gp_learner_vis_preview.png"></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="publications">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <h2 class="section-heading">Publications</h2>
+                    <hr class="primary">
+                    <p>
+                        In the context of our work the following papers have been published:
+                    </p>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 text-center">
+                    <div class="service-box">
+                        <i class="fa fa-4x fa-database wow bounceIn text-primary"></i>
+                        <h3 id="paper_eat_mapping">EAT as RDF and DBpedia Mapping</h3>
                         <p class="text-muted">
-                            The 790 manually verified mappings of strong EAT associations to semantic associations between DBpedia entities are provided as dereferenceable <a href="https://w3id.org/associations/mapping_eat_dbpedia.rdf">RDF</a>, as <a href="https://w3id.org/associations/mapping_eat_dbpedia.tsv">TSV</a> and <a href="https://w3id.org/associations/mapping_eat_dbpedia.nt.gz">dump file</a> as well.
+                            J. Hees, R. Bauer, J. Folz, D. Borth &amp; A. Dengel -
+                        </p>
+                        <p>
+                            Edinburgh Associative Thesaurus as RDF and DBpedia Mapping.
+                        </p>
+                        <p class="text-muted">
+                            Proceedings of ESWC 2016 SE, Herarklion, Crete.
+                        </p>
+                        <p class="text-muted">
+                            LNCS, Springer.
+                        </p>
+                        <p>
+                            (<a href="papers/Hees_2016_EAT_DBpedia.pdf" target="_blank">PDF</a>)
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6 text-center">
+                    <div class="service-box">
+                        <i class="fa fa-4x fa-filter wow bounceIn text-primary" data-wow-delay=".1s"></i>
+                        <h3 id="paper_gplearner">Evolutionary Graph Pattern Learner</h3>
+                        <p class="text-muted">
+                            J. Hees, R. Bauer, J. Folz, D. Borth &amp; A. Dengel
+                        </p>
+                        <p>
+                            An Evolutionary Algorithm to Learn SPARQL Queries for Source-Target-Pairs - Finding Patterns for Human Associations in DBpedia.
+                        </p>
+                        <p class="text-muted">
+                            (Under review)
+                        </p>
+                        <p class="text-muted">
+                            Proceedings of EKAW 2016, Bologna, Italy.
+                        </p>
+                        <p class="text-muted">
+                            LNCS, Springer.
+                        </p>
+                        <p>
+                            (<a href="papers/Hees_2016_GP_Learner.pdf" target="_blank">PDF</a>)
                         </p>
                     </div>
                 </div>
@@ -287,11 +415,11 @@
                 </div>
                 <div class="col-md-4 text-center">
                     <i class="fa fa-user fa-3x wow bounceIn" data-wow-delay=".1s"></i>
-                    <p><a href="https://joernhees.de/blog/about">Jörn Hees</a><br>(main contact)</p>
+                    <p><a href="https://joernhees.de/blog/about" target="_blank">Jörn Hees</a><br>(main contact)</p>
                 </div>
                 <div class="col-md-4 text-center">
                     <i class="fa fa-users fa-3x wow bounceIn" data-wow-delay=".2s"></i>
-                    <p><a href="https://km.dfki.de/">DFKI Knowledge Management</a><br>(our research group)</p>
+                    <p><a href="https://km.dfki.de/" target="_blank">DFKI Knowledge Management</a><br>(our research group)</p>
                 </div>
             </div>
         </div>
@@ -316,7 +444,7 @@
     <script>
         if (!window.d3) {
             console.warn("d3js.org not reachable");
-            document.write('<script src="js/d3.v3.min.js">\x3C/script>');
+            document.write('<script src="js/d3.min.js">\x3C/script>');
         }
     </script>
 <script>

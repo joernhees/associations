@@ -102,7 +102,7 @@ GraphView.start = function() {
         .style("font-size", FONTSIZE)
         .append("svg:tspan")
         .attr("class", "link-label-shadow")
-        .attr("dy", "-1");
+        .attr("dy", "-2");
     GraphView.joins.linkLabelsShadow
         .select('.link-label-shadow-path')
         .attr("xlink:href", function(d) {
@@ -126,7 +126,7 @@ GraphView.start = function() {
         .style("font-size", FONTSIZE)
         .append("svg:tspan")
         .attr("class", "link-label-text")
-        .attr("dy", "-1");
+        .attr("dy", "-2");
     GraphView.joins.linkLabelsText
         .select('.link-label-text-path')
         .attr("xlink:href", function(d) {
@@ -182,6 +182,10 @@ GraphView.start = function() {
     howToText.text(function(d) {return d.label;});
 
     GraphView.zoomed();
+
+    $("#settings-scale-text, #settings-scale-arrow-tips").on('switchChange.bootstrapSwitch', function (e, state) {
+        GraphView.zoomed();
+    });
 
     $(GraphView.nodes).each(function(idx, node) {
         if (node.x === undefined) {
@@ -303,19 +307,27 @@ GraphView.zoomed = function() {
 
     var translate = GraphView.lastTranslate;
     var scale     = GraphView.lastScale;
+
+    var scaleText = $('#settings-scale-text').bootstrapSwitch('state');
+    var scaleMarker = $('#settings-scale-arrow-tips').bootstrapSwitch('state');
+
     GraphView.container.attr("transform", "translate(" + translate + ")scale(" +
         scale + ")");
-    GraphView.joins.text.selectAll("text").style("font-size", (FONTSIZE / scale) + "px");
+
+    var textScale = scaleText ? 1 : scale;
+    GraphView.joins.text.selectAll("text").style("font-size", (FONTSIZE / textScale) + "px");
     GraphView.joins.text.selectAll(".shadow").style("stroke-width",
-        SHADOWSIZE / scale + "px");
+        SHADOWSIZE / textScale + "px");
     d3.selectAll(".link-label-shadow")
-        .style("stroke-width", SHADOWSIZE / scale + "px")
-        .style("font-size", FONTSIZE / scale + "px");
+        .style("stroke-width", SHADOWSIZE / textScale + "px")
+        .style("font-size", FONTSIZE / textScale + "px");
     d3.selectAll(".link-label-text").style("font-size",
-        FONTSIZE / scale + "px");
-    d3.select("#marker").attr("markerWidth", 5/scale );
-    d3.select("#marker").attr("markerHeight", 5/scale );
-    d3.select("#marker").attr("refX", 13.77777778 * scale + 6.222222222);
+        FONTSIZE / textScale + "px");
+
+    var markerScale = scaleMarker ? 1 : scale;
+    d3.select("#marker").attr("markerWidth", 5 / markerScale);
+    d3.select("#marker").attr("markerHeight", 5 / markerScale);
+    d3.select("#marker").attr("refX", 13.77777778 * markerScale + 6.222222222);
 
     d3.selectAll(".link").style("stroke-width", (INIT_LINK_WIDTH / scale) + "px")
 };
@@ -400,7 +412,9 @@ GraphView.reset = function() {
 };
 
 
-if (! ('d3' in window)) {
-    console.error("GraphView module needs d3 lib to be loaded.");
+if (! ('d3' in window &&
+       '$' in window &&
+       'bootstrapSwitch' in $.fn)) {
+    console.error("GraphView module needs d3, jquery, bootstrap, bootstrap-switch libs to be loaded.");
     delete GraphView;
 }

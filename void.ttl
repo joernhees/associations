@@ -1,0 +1,78 @@
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix wv: <http://vocab.org/waiver/terms/norms> .
+@prefix sd: <http://www.w3.org/ns/sparql-service-description#> .
+
+@prefix assoc: <https://w3id.org/associations/> .
+@prefix eat: <http://www.eat.rl.ac.uk/#> .
+@prefix : <https://w3id.org/associations/void.ttl#> .
+@base <https://w3id.org/associations/void.ttl> .
+
+
+<> a void:DatasetDescription ;
+    dcterms:title "A VoID Description of the Human Associations Dataset" ;
+    dcterms:creator <http://joernhees.de/#me> ;
+    foaf:primaryTopic :Associations ;
+.
+
+:Associations a void:Dataset ;
+    dcterms:title "Human Associations" ;
+    dcterms:description "Human Association datasets as Linked Data" ;
+    dcterms:source <https://w3id.org/associations> ;
+    dcterms:modified "2017-06-16"^^xsd:date ;
+    dcterms:subject <http://dbpedia.org/resource/Association_(psychology)> ;
+    dcterms:subject <http://dbpedia.org/resource/Association_of_ideas> ;
+    dcterms:subject <http://dbpedia.org/resource/Psychology> ;
+    foaf:homepage <https://w3id.org/associations> ;
+    void:vocabulary assoc:vocab ;
+    void:subset :EAT ;
+    void:subset :Verified_EAT_DBpedia_Mappings ;
+    void:triples 1679116 ;
+.
+
+
+:EAT a void:Dataset ;
+    dcterms:title "Edinburgh Associative Thesaurus (EAT)" ;
+    foaf:source <http://www.eat.rl.ac.uk> ;
+    foaf:homepage <https://w3id.org/associations> ;
+    foaf:page <http://www.eat.rl.ac.uk> ;
+    foaf:page <http://vlado.fmf.uni-lj.si/pub/networks/data/dic/eat/Eat.htm> ;
+    void:uriSpace "http://www.eat.rl.ac.uk/" ;
+    void:dataDump <https://w3id.org/associations/eat.nt.gz> ;
+    void:feature <http://www.w3.org/ns/formats/N-Triples> ;
+    void:vocabulary assoc:vocab ;
+    void:triples 1674376 ;
+    void:entities 348806 ;
+    void:classes 2 ;
+    void:properties 6 ;
+    void:distinctSubjects 348806 ;
+    void:distinctObjects 47447 ;
+    void:documents 1 ;
+.
+
+
+:Verified_EAT_DBpedia_Mappings a void:Linkset ;
+    dcterms:title "Verified Mappings of EAT associations to DBpedia Entities" ;
+    foaf:source <https://w3id.org/associations> ;
+    foaf:homepage <https://w3id.org/associations> ;
+    void:uriSpace "https://w3id.org/associations/mapping_eat_dbpedia#" ;
+    void:dataDump <https://w3id.org/associations/mapping_eat_dbpedia.nt.gz> ;
+    void:feature <http://www.w3.org/ns/formats/N-Triples> ;
+    void:vocabulary assoc:vocab ;
+    void:triples 4740 ;
+    void:entities 790 ;
+    void:classes 3 ;
+    void:properties 4 ;
+    void:distinctSubjects 1580 ;
+    void:distinctObjects 1748 ;
+    void:documents 1 ;
+    void:subjectsTarget :Associations ;
+    void:objectsTarget <http://dbpedia.org/void/Dataset> ;
+    void:linkPredicate <https://w3id.org/associations/vocab#stimulus> ;
+    void:linkPredicate <https://w3id.org/associations/vocab#response> ;
+.

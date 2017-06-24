@@ -96,7 +96,7 @@ GraphView.start = function() {
         .attr("startOffset", "50%")
         .attr("text-anchor", "middle")
         .style("stroke", "#fff")
-        .style("stroke-opacity",0.8)
+        .style("stroke-opacity", 0.8)
         .style("font-family", "Arial")
         .style("stroke-width", SHADOWSIZE)
         .style("font-size", FONTSIZE)

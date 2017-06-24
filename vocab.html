@@ -1,32 +1,26 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<!--?xml version="1.0" encoding="UTF-8"?-->
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <link href="//eelst.cs.unibo.it/apps/LODE/owl.css" rel="stylesheet"
-          type="text/css"/>
-    <link href="//eelst.cs.unibo.it/apps/LODE/Primer.css" rel="stylesheet"
-          type="text/css"/>
-    <link href="//eelst.cs.unibo.it/apps/LODE/rec.css" rel="stylesheet"
-          type="text/css"/>
-    <link href="//eelst.cs.unibo.it/apps/LODE/extra.css" rel="stylesheet"
-          type="text/css"/>
-    <link rel="shortcut icon"
-          href="//eelst.cs.unibo.it/apps/LODE/favicon.ico"/>
-    <script src="//eelst.cs.unibo.it/apps/LODE/jquery.js"></script>
-    <script src="//eelst.cs.unibo.it/apps/LODE/jquery.scrollTo.js"></script>
-    <!-- <script src="/static/js/marked.min.js"></script> -->
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link href="vocab_files/owl.css" rel="stylesheet" type="text/css">
+    <link href="vocab_files/Primer.css" rel="stylesheet" type="text/css">
+    <link href="vocab_files/rec.css" rel="stylesheet" type="text/css">
+    <link href="vocab_files/extra.css" rel="stylesheet" type="text/css">
+    <script src="vocab_files/jquery.js"></script>
+    <script src="vocab_files/jquery.scrollTo.js"></script>
+    <script src="vocab_files/marked.min.js"></script>
     <script>
         $(document).ready(
-                function () {
-                    jQuery(".markdown").each(function (el) {
-                        jQuery(this).after(marked(jQuery(this).text())).remove()
-                    });
-                    var list = $('a[name="https://w3id.org/associations/vocab"]');
-                    if (list.size() != 0) {
-                        var element = list.first();
-                        $.scrollTo(element);
-                    }
+            function () {
+                jQuery(".markdown").each(function (el) {
+                    jQuery(this).after(marked(jQuery(this).text())).remove()
                 });
+                var list = $('a[name="https://w3id.org/associations/vocab"]');
+                if (list.size() != 0) {
+                    var element = list.first();
+                    $.scrollTo(element);
+                }
+            });
     </script>
 </head>
 <body>
@@ -48,7 +42,7 @@
                 source</a></dd>
     </dl>
 </div>
-<hr/>
+<hr>
 <div id="toc"><h2>Table of Content</h2>
     <ol>
         <li><a href="#classes">Classes</a></li>
@@ -65,8 +59,7 @@
         <li><a href="#d4e128"
                title="https://w3id.org/associations/vocab#Mapping">Mapping</a>
         </li>
-        <li><a href="#d4e140"
-               title="https://w3id.org/associations/vocab#Term">Term</a>
+        <li><a href="#d4e140" title="https://w3id.org/associations/vocab#Term">Term</a>
         </li>
         <li><a href="#d4e151"
                title="https://w3id.org/associations/vocab#VerifiedMapping">VerifiedMapping</a>
@@ -78,9 +71,10 @@
         <h3>Association<sup title="class" class="type-c">c</sup><span
                 class="backlink"> back to <a href="#toc">ToC</a> or <a
                 href="#classes">Class ToC</a></span></h3>
-        <p><strong>IRI:</strong>
-            https://w3id.org/associations/vocab#Association</p>
-        <div class="comment"><span class="markdown">An association having a stimulus and a respone, a count and frequency.</span>
+        <p><strong>IRI:</strong> https://w3id.org/associations/vocab#Association
+        </p>
+        <div class="comment"><p>An association having a stimulus and a respone,
+            a count and frequency.</p>
         </div>
         <dl class="description">
             <dt>is in domain of</dt>
@@ -111,9 +105,13 @@
         <h3>Mapping<sup title="class" class="type-c">c</sup><span
                 class="backlink"> back to <a href="#toc">ToC</a> or <a
                 href="#classes">Class ToC</a></span></h3>
-        <p><strong>IRI:</strong>
-            https://w3id.org/associations/vocab#Mapping</p>
-        <div class="comment"><span class="markdown">A mapping in the context of associations. If an association is an instance of this class it typically wasn't directly created on the dataset of the stimulus and response but was mapped to the entities from another dataset (see the mappedTo property).</span>
+        <p><strong>IRI:</strong> https://w3id.org/associations/vocab#Mapping</p>
+        <div class="comment"><p>A
+            mapping in the context of associations. If an association is an
+            instance of this class it typically wasn't directly created on the
+            dataset of the stimulus and response but was mapped to the entities
+            from
+            another dataset (see the mappedTo property).</p>
         </div>
         <dl class="description">
             <dt>has sub-classes</dt>
@@ -128,9 +126,9 @@
         <h3>Term<sup title="class" class="type-c">c</sup><span class="backlink"> back to <a
                 href="#toc">ToC</a> or <a href="#classes">Class ToC</a></span>
         </h3>
-        <p><strong>IRI:</strong>
-            https://w3id.org/associations/vocab#Term</p>
-        <div class="comment"><span class="markdown">A class representing an association term that can either occur as stimulus or as response of an association.</span>
+        <p><strong>IRI:</strong> https://w3id.org/associations/vocab#Term</p>
+        <div class="comment"><p>A class representing an association term that
+            can either occur as stimulus or as response of an association.</p>
         </div>
         <dl class="description">
             <dt>is in range of</dt>
@@ -149,9 +147,8 @@
                 class="backlink"> back to <a href="#toc">ToC</a> or <a
                 href="#classes">Class ToC</a></span></h3>
         <p><strong>IRI:</strong>
-            https://w3id.org/associations/vocab#VerifiedMapping
-        </p>
-        <div class="comment"><span class="markdown">A mapping that has been manually verified.</span>
+            https://w3id.org/associations/vocab#VerifiedMapping</p>
+        <div class="comment"><p>A mapping that has been manually verified.</p>
         </div>
         <dl class="description">
             <dt>has super-classes</dt>
@@ -179,9 +176,10 @@
         <h3>mapped to<sup title="object property" class="type-op">op</sup><span
                 class="backlink"> back to <a href="#toc">ToC</a> or <a
                 href="#objectproperties">Object Property ToC</a></span></h3>
-        <p><strong>IRI:</strong>
-            https://w3id.org/associations/vocab#mappedTo</p>
-        <div class="comment"><span class="markdown">A mapping from an association in one dataset to an equivalent one in another.</span>
+        <p><strong>IRI:</strong> https://w3id.org/associations/vocab#mappedTo
+        </p>
+        <div class="comment"><p>A mapping from an association in one dataset to
+            an equivalent one in another.</p>
         </div>
         <div class="description">
             <dl>
@@ -202,9 +200,9 @@
         <h3>response<sup title="object property" class="type-op">op</sup><span
                 class="backlink"> back to <a href="#toc">ToC</a> or <a
                 href="#objectproperties">Object Property ToC</a></span></h3>
-        <p><strong>IRI:</strong>
-            https://w3id.org/associations/vocab#response</p>
-        <div class="comment"><span class="markdown">The response term of an association.</span>
+        <p><strong>IRI:</strong> https://w3id.org/associations/vocab#response
+        </p>
+        <div class="comment"><p>The response term of an association.</p>
         </div>
         <div class="description">
             <dl>
@@ -225,9 +223,9 @@
         <h3>stimulus<sup title="object property" class="type-op">op</sup><span
                 class="backlink"> back to <a href="#toc">ToC</a> or <a
                 href="#objectproperties">Object Property ToC</a></span></h3>
-        <p><strong>IRI:</strong>
-            https://w3id.org/associations/vocab#stimulus</p>
-        <div class="comment"><span class="markdown">The stimulus term of an association.</span>
+        <p><strong>IRI:</strong> https://w3id.org/associations/vocab#stimulus
+        </p>
+        <div class="comment"><p>The stimulus term of an association.</p>
         </div>
         <div class="description">
             <dl>
@@ -245,8 +243,7 @@
 </div>
 <div id="dataproperties"><h2>Data Properties</h2>
     <ul class="hlist">
-        <li><a href="#d4e63"
-               title="https://w3id.org/associations/vocab#count">count</a>
+        <li><a href="#d4e63" title="https://w3id.org/associations/vocab#count">count</a>
         </li>
         <li><a href="#d4e79"
                title="https://w3id.org/associations/vocab#frequency">frequency</a>
@@ -258,9 +255,9 @@
         <h3>count<sup title="data property" class="type-dp">dp</sup><span
                 class="backlink"> back to <a href="#toc">ToC</a> or <a
                 href="#dataproperties">Data Property ToC</a></span></h3>
-        <p><strong>IRI:</strong>
-            https://w3id.org/associations/vocab#count</p>
-        <div class="comment"><span class="markdown">The count how often this association occurred.</span>
+        <p><strong>IRI:</strong> https://w3id.org/associations/vocab#count</p>
+        <div class="comment"><p>The count how often this association
+            occurred.</p>
         </div>
         <div class="description">
             <dl>
@@ -281,9 +278,10 @@
         <h3>frequency<sup title="data property" class="type-dp">dp</sup><span
                 class="backlink"> back to <a href="#toc">ToC</a> or <a
                 href="#dataproperties">Data Property ToC</a></span></h3>
-        <p><strong>IRI:</strong>
-            https://w3id.org/associations/vocab#frequency</p>
-        <div class="comment"><span class="markdown">The relative count of this association wrt. all associations of the stimulus.</span>
+        <p><strong>IRI:</strong> https://w3id.org/associations/vocab#frequency
+        </p>
+        <div class="comment"><p>The relative count of this association wrt. all
+            associations of the stimulus.</p>
         </div>
         <div class="description">
             <dl>
@@ -302,9 +300,7 @@
     <dl>
         <dt><em>default namespace</em></dt>
         <dd>https://w3id.org/associations/vocab#</dd>
-        <dt>association-vocab</dt>
-        <dd>https://w3id.org/associations/vocab/</dd>
-        <dt>w3id-org-association</dt>
+        <dt>associations</dt>
         <dd>https://w3id.org/associations/</dd>
         <dt>owl</dt>
         <dd>http://www.w3.org/2002/07/owl#</dd>
@@ -312,6 +308,8 @@
         <dd>http://www.w3.org/1999/02/22-rdf-syntax-ns#</dd>
         <dt>rdfs</dt>
         <dd>http://www.w3.org/2000/01/rdf-schema#</dd>
+        <dt>vocab</dt>
+        <dd>https://w3id.org/associations/vocab/</dd>
         <dt>xsd</dt>
         <dd>http://www.w3.org/2001/XMLSchema#</dd>
     </dl>
@@ -320,7 +318,6 @@
     ontology source code through <a
             href="http://www.essepuntato.it/lode">LODE</a>, <em>Live OWL
         Documentation Environment</em>, developed by <a
-            href="http://www.essepuntato.it">Silvio Peroni</a>.</p></body>
+            href="http://www.essepuntato.it/">Silvio Peroni</a>.</p>
+</body>
 </html>
-
-

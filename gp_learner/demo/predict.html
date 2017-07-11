@@ -57,29 +57,35 @@
     #header-wrapper {
       min-height: 1100px;
     }
+
     header .header-content .header-content-inner p {
       margin-top: 15px;
       margin-bottom: 15px;
     }
 
-    #predictionResults .panel-body {
+    #fusedPrediction {
+      min-width: 600px;
+    }
+
+    #demoResults .tab-pane {
       min-height: 600px;
     }
 
-    #demo .placeholder {
+    #demoResults .placeholder {
+      min-height: 600px;
       height: 50vh;
       display: flex;
       align-items: center;
     }
 
-    /* always show selected buttons (o*/
-    #demo table>tbody>tr>td>div.feedback>button,
-    #demo table>tbody>tr:hover>td>div.feedback.selected>button {
+    /* highlight selected or current row buttons */
+    #fusedPrediction table>tbody>tr>td>div.feedback>button,
+    #fusedPrediction table>tbody>tr:hover>td>div.feedback.selected>button {
       opacity: 0.2;
     }
-    #demo table>tbody>tr:hover>td>div.feedback>button,
-    #demo table>tbody>tr>td>div.feedback.selected>button.selected,
-    #demo table>tbody>tr:hover>td>div.feedback.selected>button.selected {
+    #fusedPrediction table>tbody>tr:hover>td>div.feedback>button,
+    #fusedPrediction table>tbody>tr>td>div.feedback.selected>button.selected,
+    #fusedPrediction table>tbody>tr:hover>td>div.feedback.selected>button.selected {
       opacity: 1.0;
     }
   </style>
@@ -169,28 +175,67 @@
         </div>
         <div class="row">
           <div class="col-sm-offset-1 col-sm-10">
-            <div id="predictionResults" class="panel panel-default">
-              <div class="panel-heading">
-                <h3 class="panel-title">Prediction Results</h3>
-              </div>
-              <div class="panel-body">
-                <div class="placeholder jumbotron text-center">
-                  <div class="col-xs-12 col-sm-offset-2 col-sm-8">
-                    Results will be shown here
+            <div id="demoResults">
+              <!-- Nav tabs -->
+              <ul class="nav nav-tabs" role="tablist">
+                <li role="presentation" class="active"><a href="#graphPatterns" aria-controls="Graph Patterns" role="tab" data-toggle="tab">Graph Patterns</a></li>
+                <li role="presentation" class="disabled"><a class="" href="#rawPrediction" aria-controls="Raw Prediction Results" role="tab" data-toggle="tab">Raw Prediction Results</a></li>
+                <li role="presentation" class="dropdown disabled">
+                  <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
+                    Fused Prediction Results <span class="caret"></span>
+                  </a>
+                  <ul class="dropdown-menu">
+                    <li role="presentation"><a href="#fusedPrediction" aria-controls="fusedPrediction" role="tab" data-toggle="tab">Fused Prediction Results</a></li>
+                  </ul>
+                </li>
+              </ul>
+
+              <!-- Tab panes -->
+              <div class="tab-content">
+
+                <div role="tabpanel" class="tab-pane fade in active" id="graphPatterns">
+                  <div class="placeholder jumbotron text-center">
+                    <div class="col-xs-12">
+                      <p>Loading...</p>
+                      <p><i class='fa fa-spinner fa-spin fa-3x fa-fw'></i></p>
+                    </div>
+                  </div>
+                  <div id="graphPatternContent" class="hidden list-group">
                   </div>
                 </div>
-                <table class="hidden table table-hover">
-                  <thead><tr>
-                    <th>#</th>
-                    <th>Predicted response</th>
-                    <th>Score</th>
-                    <th>Explain</th>
-                    <th>Feedback</th>
-                  </tr></thead>
-                  <tbody>
-                  </tbody>
-                </table>
+
+                <div role="tabpanel" class="tab-pane fade" id="rawPrediction">
+                  <div class="placeholder jumbotron text-center">
+                    <div class="col-xs-12">
+                      <p>Loading...</p>
+                      <p><i class='fa fa-spinner fa-spin fa-3x fa-fw'></i></p>
+                    </div>
+                  </div>
+                  <div class="hidden"></div>
+                </div>
+
+                <div role="tabpanel" class="tab-pane fade" id="fusedPrediction">
+                  <div class="placeholder jumbotron text-center">
+                    <div class="col-xs-12">
+                      <p>Predicting...</p>
+                      <p style="font-size: small">(performing 100 SPARQL queries & fusing results)</p>
+                      <p><i class='fa fa-spinner fa-spin fa-3x fa-fw'></i></p>
+                    </div>
+                  </div>
+                  <table class="hidden table table-hover">
+                    <thead><tr>
+                      <th>#</th>
+                      <th>Predicted response</th>
+                      <th>Score</th>
+                      <th>Explain</th>
+                      <th>Feedback</th>
+                    </tr></thead>
+                    <tbody>
+                    </tbody>
+                  </table>
+                </div>
               </div>
+
             </div>
           </div>
         </div>
@@ -243,7 +288,6 @@
 <!-- Custom Theme JavaScript -->
 <script src="js/creative.js"></script>
 
-
 <script src="//cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js"
         charset="utf-8"></script>
 <script>
@@ -256,17 +300,62 @@
 <script src="gp_learner/demo/predict_config.js"></script>
 <script>
     let demo_source = '';
-    const $demo = $('#demo');
-    const $predictionResults = $demo.find('#predictionResults');
+    let graph_patterns = null;
+    const $demo = $('#demoResults');
+    const $graphPatterns = $demo.find('#graphPatterns');
+    const $fusedPrediction = $demo.find('#fusedPrediction');
     const $stimulusForm = $('#stimulusForm');
+
+    function load_graph_patterns() {
+        $.get(
+            gpl_endpoint_graph_patterns,
+            null,
+            function (data) {
+                console.log('loaded gps', data);
+                graph_patterns = data['graph_patterns'];
+                render_graph_patterns();
+            },
+            'json'
+        );
+    }
+    $(load_graph_patterns);
+
+    function render_graph_patterns() {
+        let $content = $graphPatterns.find('#graphPatternContent');
+        for (let i=1; i <= graph_patterns.length; i++) {
+            let gp = graph_patterns[i-1];
+            // let $triples = $('<ul class="triples">');
+            // for (let t of gp['graph_triples']) {
+            //     let $t = $('<li class="triple">');
+            //     for (let n of t) {
+            //         $t.append($('<span class="node">').text(n).append(' '));
+            //     }
+            //     $t.append('.');
+            //     $triples.append($t);
+            // }
+            let sparql = gp['sparql'].replace(/^PREFIX .*$\n/mg, '');
+
+            let $sparql = $('<pre>').text(sparql);
+            let $li = $('<a id="gp' + i + '" href="#" class="list-group-item">')
+                .append('<h4 class="list-group-item-heading">GraphPattern ' + i + '</h4>')
+                //.append($triples)
+                .append($sparql);
+            $content.append($li);
+        }
+        $graphPatterns.find('.placeholder').addClass('hidden');
+        $content.find('a.list-group-item').click(function (event) {
+            event.preventDefault();
+        });
+        $content.removeClass('hidden');
+    }
 
     function reset() {
         // resets the GUI
         demo_source = '';
 
         // show placeholder, hide table
-        $predictionResults.find('.placeholder').removeClass('hidden');
-        $predictionResults.find('table').addClass('hidden');
+        $fusedPrediction.find('.placeholder').removeClass('hidden');
+        $fusedPrediction.find('table').addClass('hidden');
     }
 
     function predict(source) {
@@ -283,7 +372,7 @@
             {source: source},
             function (data) {
                 console.log(data);
-                const $table = $predictionResults.find('table');
+                const $table = $fusedPrediction.find('table');
                 const $tbody = $table.find('tbody');
                 for (let fm of ['target_occs',]) {
                     $tbody.html('');
@@ -319,7 +408,7 @@
                 }
                 $table.find('.feedback .btn').click(feedback);
                 $table.removeClass('hidden');
-                $predictionResults.find('.placeholder').addClass('hidden');
+                $fusedPrediction.find('.placeholder').addClass('hidden');
             },
             'json'
         ).fail(function(jqXHR, textStatus, errorThrown) {

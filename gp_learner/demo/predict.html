@@ -67,9 +67,20 @@
     }
 
     #demo .placeholder {
-      height: 75vh;
+      height: 50vh;
       display: flex;
       align-items: center;
+    }
+
+    /* always show selected buttons (o*/
+    #demo table>tbody>tr>td>div.feedback>button,
+    #demo table>tbody>tr:hover>td>div.feedback.selected>button {
+      opacity: 0.2;
+    }
+    #demo table>tbody>tr:hover>td>div.feedback>button,
+    #demo table>tbody>tr>td>div.feedback.selected>button.selected,
+    #demo table>tbody>tr:hover>td>div.feedback.selected>button.selected {
+      opacity: 1.0;
     }
   </style>
 </head>
@@ -139,7 +150,7 @@
     <div class="row">
       <div class="col-xs12">
         <div class="row">
-          <div class="col-sm-offset-2 col-sm-8">
+          <div class="col-sm-offset-1 col-sm-10">
             <form id="stimulusForm" class="form">
               <div class="form-group">
                 <label>Enter a stimulus:</label>
@@ -157,35 +168,26 @@
           </div>
         </div>
         <div class="row">
-          <div class="col-sm-offset-2 col-sm-8">
+          <div class="col-sm-offset-1 col-sm-10">
             <div id="predictionResults" class="panel panel-default">
               <div class="panel-heading">
                 <h3 class="panel-title">Prediction Results</h3>
               </div>
               <div class="panel-body">
-                <div class="placeholder jumbotron text-center">Results will be shown here</div>
+                <div class="placeholder jumbotron text-center">
+                  <div class="col-xs-12 col-sm-offset-2 col-sm-8">
+                    Results will be shown here
+                  </div>
+                </div>
                 <table class="hidden table table-hover">
                   <thead><tr>
                     <th>#</th>
                     <th>Predicted response</th>
                     <th>Score</th>
+                    <th>Explain</th>
+                    <th>Feedback</th>
                   </tr></thead>
                   <tbody>
-                  <tr>
-                    <th scope="row">1</th>
-                    <td>Mark</td>
-                    <td>@mdo</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">2</th>
-                    <td>Jacob</td>
-                    <td>Thornton</td>
-                  </tr>
-                  <tr>
-                    <th scope="row">3</th>
-                    <td>Larry</td>
-                    <td>the Bird</td>
-                  </tr>
                   </tbody>
                 </table>
               </div>
@@ -256,6 +258,7 @@
     let demo_source = '';
     const $demo = $('#demo');
     const $predictionResults = $demo.find('#predictionResults');
+    const $stimulusForm = $('#stimulusForm');
 
     function reset() {
         // resets the GUI
@@ -270,9 +273,9 @@
         if (!source.startsWith('http://dbpedia.org/resource/')) {
             return;
         }
-        let $form = $('#stimulusForm');
-        $form.find('input').blur();
-        let $btn = $form.find('button').button('loading');
+        let $input = $stimulusForm.find('input');
+        $input.prop('disabled', true).val(source).text(source).blur();
+        let $btn = $stimulusForm.find('button').button('loading');
 
         demo_source = source;
         $.post(
@@ -286,26 +289,67 @@
                     $tbody.html('');
                     let res = data['fused_results'][fm];
                     console.log(res);
-                    for (let i=0; i < res.length; i++) {
+                    for (let i=0; i < Math.min(res.length, MAX_RESULT_ROWS); i++) {
                         let [target, score] = res[i];
                         console.log(target, score);
                         let starget = target.replace(/http:\/\/dbpedia.org\/resource\//, 'dbr:');
+                        if (starget.length > 30) {
+                            starget = starget.slice(0, 30) + '...';
+                        }
                         $tbody.append(
-                            `<tr><td>${i+1}</td><td><a href="${target}">${starget}</a></td><td>${score}</td></tr>`
+                            '<tr>' +
+                                '<td class="rank">' + (i+1) + '</td>' +
+                                '<td><a class="target" href="' + target + '">' + starget + '</a></td>' +
+                                '<td>' + score + '</td>' +
+                                '<td>--</td>' +
+                                '<td>' +
+                                    '<div class="feedback btn-group" role="group">' +
+                                        '<button class="btn btn-xs btn-success feedback-positive"><i class="fa fa-check" aria-hidden="true"></i></button>' +
+                                        '<button class="btn btn-xs btn-warning feedback-negative"><i class="fa fa-times" aria-hidden="true"></i></button>' +
+                                    '</div>' +
+                                '</td>' +
+                            '</tr>'
+                        );
+                    }
+                    if (res.length > MAX_RESULT_ROWS) {
+                        $tbody.append(
+                            '<tr><td class="text-center" colspan="5">... ' + (res.length - MAX_RESULT_ROWS) + ' further results hidden to save your browser.</td></tr>'
                         );
                     }
                 }
+                $table.find('.feedback .btn').click(feedback);
                 $table.removeClass('hidden');
                 $predictionResults.find('.placeholder').addClass('hidden');
             },
             'json'
         ).fail(function(jqXHR, textStatus, errorThrown) {
         }).always(function () {
+            $input.prop('disabled', false);
             $btn.button('reset');
         });
     }
 
-    let $autocomplete = $('.autocomplete').typeahead({
+    function feedback(event) {
+        let $btn = $(this);
+        $btn.parent().addClass('selected').children().removeClass('selected');
+        $btn.addClass('selected');
+        let $row = $btn.parents('tr');
+        let target = $row.find('td a.target').attr('href');
+        let feedback = $btn.hasClass('feedback-positive');
+        let rank = parseInt($row.find('td.rank').text());
+        let fm = 'target_occs';
+        let fb = {
+            'source': demo_source,
+            'target': target,
+            'feedback': feedback,
+            'fusion_method': fm,
+            'rank': rank
+        };
+        // console.log(fb);
+        $.post(gpl_endpoint_feedback, fb, null, 'json');
+    }
+
+    let $stimulusAutocomplete = $stimulusForm.find('.autocomplete').typeahead({
         'source': function (query, process) {
             reset();
             return $.get(
@@ -347,11 +391,14 @@
             this.$element.text(uri);
             $('#stimulusForm').find('button').click();
             // predict(uri);
+            return uri;
         },
         'autoSelect': true
     });
-    $autocomplete.focus(function () {$(this).val('')});
-    $('#stimulusForm').submit(function (event) {
+    $stimulusAutocomplete.focus(function () {
+        $(this).val('');
+    });
+    $stimulusForm.submit(function (event) {
         let source = $(this).find('.autocomplete').val();
         predict(source);
         event.preventDefault();

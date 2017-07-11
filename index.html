@@ -268,7 +268,7 @@
             <div class="row">
                 <div class="col-md-6 text-center">
                     <div class="service-box">
-                        <i class="fa fa-4x fa-cog wow bounceIn text-primary"></i>
+                        <i class="fa fa-4x fa-database wow bounceIn text-primary"></i>
                         <h3 id="eatrdf">EAT as RDF</h3>
                         <p>
                             As the transformation of all EAT associations into RDF creates nearly 1.7 M triples, we only provide, at the moment, a dump of this dataset.
@@ -280,7 +280,7 @@
                 </div>
                 <div class="col-md-6 text-center">
                     <div class="service-box">
-                        <i class="fa fa-4x fa-exchange wow bounceIn text-primary" data-wow-delay=".1s"></i>
+                        <i class="fa fa-4x fa-database wow bounceIn text-primary" data-wow-delay=".1s"></i>
                         <h3 id="eatmapdbp">Mapping EAT to DBpedia</h3>
                         <p>
                             The 790 manually verified mappings of strong EAT associations to semantic associations between DBpedia entities are provided as dereferenceable <a href="https://w3id.org/associations/mapping_eat_dbpedia.rdf" target="_blank">RDF</a>, as <a href="https://w3id.org/associations/mapping_eat_dbpedia.tsv" target="_blank">TSV</a> and <a href="https://w3id.org/associations/mapping_eat_dbpedia.nt.gz" target="_blank">dump file</a> as well.
@@ -302,7 +302,7 @@
         </div>
         <div class="container">
             <div class="row">
-                <div class="col-md-6 text-center">
+                <div class="col-md-4 text-center">
                     <div class="service-box">
                         <i class="fa fa-4x fa-cogs wow bounceIn text-primary"></i>
                         <h3 id="gp_learner_source">Evolutionary Algorithm</h3>
@@ -311,17 +311,14 @@
                             It takes an input list of source-target-pairs (such as the stimulus-response-pairs of the semantic associations above) and learns SPARQL queries for them from a given SPARQL endpoint.
                         </p>
                         <p>
-                            Given a source node, the learned SPARQL patterns can be used to predict a list of target nodes and by this simulate human associating based on DBpedia.
-                        </p>
-                        <p>
                             The source-code for our algorithm can be found on <a href="https://github.com/RDFLib/graph-pattern-learner" target="_blank">GitHub</a>.
                         </p>
                     </div>
                 </div>
-                <div class="col-md-6 text-center">
+                <div class="col-md-4 text-center">
                     <div class="service-box">
                         <i class="fa fa-4x fa-connectdevelop wow bounceIn text-primary" data-wow-delay=".1s"></i>
-                        <h3 id="gp_learner_results">Results</h3>
+                        <h3 id="gp_learner_results">Resulting Patterns</h3>
                         <p>
                             We ran our pattern learner against a <a href="https://joernhees.de/blog/2015/11/23/setting-up-a-linked-data-mirror-from-rdf-dumps-dbpedia-2015-04-freebase-wikidata-linkedgeodata-with-virtuso-7-2-1-and-docker-optional/" target="_blank">local Linked Data endpoint</a> filled with 7.9 G triples from the heart of the <a href="http://lod-cloud.net" target="_blank">LOD-Cloud</a>.
                         </p>
@@ -329,6 +326,18 @@
                              The resulting learned graph patterns are available in an <a href="gp_learner/vis/visualise.html" target="_blank">interactive visualisation</a>:
                         </p>
                         <a href="gp_learner/vis/visualise.html" target="_blank"><img style="width:100%" src="img/gp_learner_vis_preview.png"></a>
+                    </div>
+                </div>
+                <div class="col-md-4 text-center">
+                    <div class="service-box">
+                        <i class="fa fa-4x fa-play-circle wow bounceIn text-primary"></i>
+                        <h3 id="gp_learner_prediction">Predicting Associations</h3>
+                        <p>
+                            Given a source node, the learned SPARQL patterns can be used to predict a list of target nodes and by this simulate human associating based on DBpedia.
+                        </p>
+                        <p>
+                            <a href="gp_learner/demo/predict.html" target="_blank">Try it out</a>
+                        </p>
                     </div>
                 </div>
             </div>

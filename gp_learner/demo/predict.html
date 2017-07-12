@@ -82,16 +82,24 @@
 
     #graphPatternContent .panel-default {
       background-color: #f5f5f5;
+      color: #333;
     }
     #graphPatternContent h4 small {
       margin-left: 10px;
     }
 
+    #graphPatternContent .targetCount.badge {
+      margin-right: 4px;
+      padding: 2px 5px;
+      font-weight: normal;
+      background-color: #f05f40;
+    }
+
     /* if filtered don't show not selected gps */
-    #graphPatternContent.filtered a.list-group-item {
+    #graphPatternContent.filtered .graphPattern {
       display: none;
     }
-    #graphPatternContent.filtered a.list-group-item.active {
+    #graphPatternContent.filtered .graphPattern.active {
       display: block;
     }
 
@@ -196,8 +204,8 @@
             <div id="demoResults">
               <!-- Nav tabs -->
               <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#graphPatterns" aria-controls="Graph Patterns" role="tab" data-toggle="tab">Graph Patterns <span id="gp-count" class="badge"><i class='fa fa-spinner fa-spin fa-large'></i></span></a></li>
-                <li role="presentation" class="disabled"><a href="#fusedPrediction" aria-controls="fusedPrediction" role="tab" data-toggle="tab">Fused Prediction Results</a></li>
+                <li role="presentation" class="active"><a id="graphPatternsTabLink" href="#graphPatterns" aria-controls="Graph Patterns" role="tab" data-toggle="tab">Graph Patterns <span id="gp-count" class="badge"><i class='fa fa-spinner fa-spin fa-large'></i></span></a></li>
+                <li role="presentation" class="disabled"><a id="fusedPredictionTabLink" href="#fusedPrediction" aria-controls="fusedPrediction" role="tab" data-toggle="tab">Fused Prediction Results</a></li>
               </ul>
 
               <!-- Tab panes -->
@@ -216,13 +224,13 @@
                       <div class="btn-toolbar" role="toolbar" aria-label="Graph Pattern Controls">
                         <div class="btn-group" role="group" aria-label="SPARQL toggler">
                           <button type="button" class="btn btn-default disabled">SPARQL:</button>
-                          <button id="btnAllSPARQLCollapse" type="button" class="btn btn-default"><i class="fa fa-compress" aria-hidden="true"></i></button>
                           <button id="btnAllSPARQLExpand" type="button" class="btn btn-default"><i class="fa fa-expand" aria-hidden="true"></i></button>
+                          <button id="btnAllSPARQLCollapse" type="button" class="btn btn-default"><i class="fa fa-compress" aria-hidden="true"></i></button>
                         </div>
                         <div class="btn-group" role="group" aria-label="Target candidate toggler">
                           <button type="button" class="btn btn-default disabled">Targets:</button>
-                          <button id="btnAllTargetsCollapse" type="button" class="btn btn-default"><i class="fa fa-compress" aria-hidden="true"></i></button>
                           <button id="btnAllTargetsExpand" type="button" class="btn btn-default"><i class="fa fa-expand" aria-hidden="true"></i></button>
+                          <button id="btnAllTargetsCollapse" type="button" class="btn btn-default"><i class="fa fa-compress" aria-hidden="true"></i></button>
                         </div>
                         <div class="btn-group" role="group" aria-label="Filter toggler">
                           <button type="button" class="btn btn-default disabled">Filter:</button>
@@ -232,7 +240,7 @@
                       </div>
                     </div>
                     <div class="panel-body">
-                      <div id="graphPatternContent" class="list-group"></div>
+                      <ul id="graphPatternContent" class="list-group"></ul>
                     </div>
                   </div>
                 </div>
@@ -245,6 +253,31 @@
                       <p><i class='fa fa-spinner fa-spin fa-3x fa-fw'></i></p>
                     </div>
                   </div>
+                  <!--<div id="graphPatternContentPanel" class="hidden panel panel-default">-->
+                    <!--<div class="panel-heading">-->
+                      <!--<p>In this tab you can inspect the patterns used for prediction.</p>-->
+                      <!--<div class="btn-toolbar" role="toolbar" aria-label="Graph Pattern Controls">-->
+                        <!--<div class="btn-group" role="group" aria-label="SPARQL toggler">-->
+                          <!--<button type="button" class="btn btn-default disabled">SPARQL:</button>-->
+                          <!--<button id="btnAllSPARQLExpand" type="button" class="btn btn-default"><i class="fa fa-expand" aria-hidden="true"></i></button>-->
+                          <!--<button id="btnAllSPARQLCollapse" type="button" class="btn btn-default"><i class="fa fa-compress" aria-hidden="true"></i></button>-->
+                        <!--</div>-->
+                        <!--<div class="btn-group" role="group" aria-label="Target candidate toggler">-->
+                          <!--<button type="button" class="btn btn-default disabled">Targets:</button>-->
+                          <!--<button id="btnAllTargetsExpand" type="button" class="btn btn-default"><i class="fa fa-expand" aria-hidden="true"></i></button>-->
+                          <!--<button id="btnAllTargetsCollapse" type="button" class="btn btn-default"><i class="fa fa-compress" aria-hidden="true"></i></button>-->
+                        <!--</div>-->
+                        <!--<div class="btn-group" role="group" aria-label="Filter toggler">-->
+                          <!--<button type="button" class="btn btn-default disabled">Filter:</button>-->
+                          <!--<button id="btnFilterToggle" type="button" class="btn btn-default" autocomplete="off"><i class="fa fa-filter" aria-hidden="true"></i></button>-->
+                          <!--<button id="btnFilterForget" type="button" class="btn btn-default"><i class="fa fa-remove" aria-hidden="true"></i></button>-->
+                        <!--</div>-->
+                      <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="panel-body">-->
+                      <!--<ul id="graphPatternContent" class="list-group"></ul>-->
+                    <!--</div>-->
+                  <!--</div>-->
                   <table class="hidden table table-hover">
                     <thead><tr>
                       <th>#</th>
@@ -328,6 +361,7 @@
 
     const $demo = $('#demoResults');
     const $graphPatterns = $demo.find('#graphPatterns');
+    const $graphPatternContent = $graphPatterns.find("#graphPatternContent");
     const $fusedPrediction = $demo.find('#fusedPrediction');
     const $stimulusForm = $('#stimulusForm');
 
@@ -346,7 +380,6 @@
     $(load_graph_patterns);
 
     function render_graph_patterns() {
-        let $content = $graphPatterns.find('#graphPatternContent');
         for (let i=1; i <= graph_patterns.length; i++) {
             let gp = graph_patterns[i-1];
             // let $triples = $('<ul class="triples">');
@@ -366,31 +399,31 @@
                 .append($('<div class="panel panel-default">')
                     .append($('<div class="panel-body">')
                         .append('<div>Targets predicted by this pattern for the given stimulus as <var>?source</var> node:</div><ul></ul>')));
-            let $li = $('<a id="gp' + i + '" href="#" class="list-group-item">')
+            let $li = $('<li id="gp' + i + '" class="list-group-item graphPattern">')
                 .append('<h4 class="list-group-item-heading">GraphPattern ' + i +
                         ' <small><a data-toggle="collapse" href="#gpSparql'+ i +'">SPARQL <i class="fa fa-caret-down"></i></a></small>' +
-                        ' <small><a data-toggle="collapse" href="#gpTargets'+ i +'">Targets <i class="fa fa-caret-down"></i></a></small>' +
+                        ' <small><a data-toggle="collapse" href="#gpTargets'+ i +'">Targets <span class="targetCount badge">0</span><i class="fa fa-caret-down"></i></a></small>' +
                         '</h4>')
                 //.append($triples)
                 .append($sparql)
                 .append($targets);
-            $content.append($li);
+            $graphPatternContent.append($li);
         }
         $graphPatterns.find('.placeholder').addClass('hidden');
-        $content.find('a.list-group-item').click(function (event) {
+        $graphPatternContent.find('.list-group-item.graphPattern').click(function (event) {
             event.preventDefault();
         });
         $('#btnAllSPARQLCollapse').click(function () {
-            $content.find('.collapse.sparql').collapse('hide');
+            $graphPatternContent.find('.collapse.sparql').collapse('hide');
         });
         $('#btnAllSPARQLExpand').click(function () {
-            $content.find('.collapse.sparql').collapse('show');
+            $graphPatternContent.find('.collapse.sparql').collapse('show');
         });
         $('#btnAllTargetsCollapse').click(function () {
-            $content.find('.collapse.targets').collapse('hide');
+            $graphPatternContent.find('.collapse.targets').collapse('hide');
         });
         $('#btnAllTargetsExpand').click(function () {
-            $content.find('.collapse.targets').collapse('show');
+            $graphPatternContent.find('.collapse.targets').collapse('show');
         });
         $('#graphPatternContentPanel').removeClass('hidden');
         unset_gp_highlights();
@@ -408,11 +441,12 @@
                 let starget = target.replace(/http:\/\/dbpedia.org\/resource\//, 'dbr:');
                 $ul.append($('<li>').append($('<a>').attr('href', target).text(starget)));
             }
+            $ul.parents('.graphPattern').find('.targetCount').text(tcs.length)
         }
     }
 
     function unset_gp_highlights() {
-        $('#graphPatternContent a.list-group-item').removeClass('active');
+        $graphPatternContent.find('.graphPattern').removeClass('active');
         $('#gp-count').empty().append(graph_patterns.length);
         $('#graphPatternContent').removeClass('filtered');
         $('#btnFilterToggle').removeClass('active');
@@ -425,12 +459,16 @@
         $btn.addClass('selected');
         let $row = $btn.parents('tr');
         let target = $row.find('td a.target').attr('href');
-        let $sel_gps = $('#graphPatternContent .targets ul>li>a[href="' + target + '"]')
-            .parents('a.list-group-item')
+        let $sel_gps = $graphPatternContent.find('.targets ul>li>a[href="' + target + '"]')
+            .addClass('highlight')
+            .parents('.graphPattern')
             .addClass('active');
         $('#gp-count').empty().append($sel_gps.length);
         toggleGPFilter();
-        //$('#graphPatternContent').addClass('filtered');
+        $('#graphPatternsTabLink').tab('show');
+        $('html, body').animate({
+            scrollTop: $("#demoResults").offset().top
+        }, 200);
     }
 
     function toggleGPFilter(event) {
@@ -449,7 +487,8 @@
         gp_tcs = null;
 
         // reset targets in graph patterns
-        $('#graphPatternContent .collapse.targets ul').empty();
+        $graphPatternContent.find('.targets ul').empty();
+        $graphPatternContent.find('.targetCount').text(0);
         unset_gp_highlights();
 
         // show placeholder, hide table
@@ -464,6 +503,13 @@
         let $input = $stimulusForm.find('input');
         $input.prop('disabled', true).val(source).text(source).blur();
         let $btn = $stimulusForm.find('button').button('loading');
+
+        // activate prediction tab
+        $('#fusedPredictionTabLink')
+            .tab('show')
+            .off('click', '**', tabDisabledHandler)
+            .attr('data-toggle', 'tab')
+            .parent().removeClass('disabled');
 
         demo_source = source;
         $.post(
@@ -602,6 +648,11 @@
         event.preventDefault();
         return false;
     });
+
+    function tabDisabledHandler(event) {
+        event.preventDefault();
+    }
+    $('#fusedPredictionTabLink').removeAttr('data-toggle').click(tabDisabledHandler);
 </script>
 
 <script>

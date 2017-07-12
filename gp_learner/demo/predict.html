@@ -48,9 +48,11 @@
       border-top-left-radius: 0;
       border-bottom-left-radius: 0;
     }
-    .input-group .input-group-btn .btn-default {
-      color: #333;
-      background-color: #fff;
+    #demoResults .btn {
+      border: 1px solid transparent;
+    }
+    .input-group .input-group-btn .btn-default,
+    #demoResults .btn-default {
       border-color: #ccc;
     }
 
@@ -78,14 +80,30 @@
       align-items: center;
     }
 
+    #graphPatternContent .panel-default {
+      background-color: #f5f5f5;
+    }
+    #graphPatternContent h4 small {
+      margin-left: 10px;
+    }
+
+    /* if filtered don't show not selected gps */
+    #graphPatternContent.filtered a.list-group-item {
+      display: none;
+    }
+    #graphPatternContent.filtered a.list-group-item.active {
+      display: block;
+    }
+
+
     /* highlight selected or current row buttons */
-    #fusedPrediction table>tbody>tr>td>div.feedback>button,
-    #fusedPrediction table>tbody>tr:hover>td>div.feedback.selected>button {
+    #fusedPrediction table>tbody>tr>td button,
+    #fusedPrediction table>tbody>tr:hover>td .selected>button {
       opacity: 0.2;
     }
-    #fusedPrediction table>tbody>tr:hover>td>div.feedback>button,
-    #fusedPrediction table>tbody>tr>td>div.feedback.selected>button.selected,
-    #fusedPrediction table>tbody>tr:hover>td>div.feedback.selected>button.selected {
+    #fusedPrediction table>tbody>tr:hover>td button,
+    #fusedPrediction table>tbody>tr>td button.selected,
+    #fusedPrediction table>tbody>tr:hover>td> .selected>button.selected {
       opacity: 1.0;
     }
   </style>
@@ -178,16 +196,8 @@
             <div id="demoResults">
               <!-- Nav tabs -->
               <ul class="nav nav-tabs" role="tablist">
-                <li role="presentation" class="active"><a href="#graphPatterns" aria-controls="Graph Patterns" role="tab" data-toggle="tab">Graph Patterns</a></li>
-                <li role="presentation" class="disabled"><a class="" href="#rawPrediction" aria-controls="Raw Prediction Results" role="tab" data-toggle="tab">Raw Prediction Results</a></li>
-                <li role="presentation" class="dropdown disabled">
-                  <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">
-                    Fused Prediction Results <span class="caret"></span>
-                  </a>
-                  <ul class="dropdown-menu">
-                    <li role="presentation"><a href="#fusedPrediction" aria-controls="fusedPrediction" role="tab" data-toggle="tab">Fused Prediction Results</a></li>
-                  </ul>
-                </li>
+                <li role="presentation" class="active"><a href="#graphPatterns" aria-controls="Graph Patterns" role="tab" data-toggle="tab">Graph Patterns <span id="gp-count" class="badge"><i class='fa fa-spinner fa-spin fa-large'></i></span></a></li>
+                <li role="presentation" class="disabled"><a href="#fusedPrediction" aria-controls="fusedPrediction" role="tab" data-toggle="tab">Fused Prediction Results</a></li>
               </ul>
 
               <!-- Tab panes -->
@@ -200,18 +210,31 @@
                       <p><i class='fa fa-spinner fa-spin fa-3x fa-fw'></i></p>
                     </div>
                   </div>
-                  <div id="graphPatternContent" class="hidden list-group">
-                  </div>
-                </div>
-
-                <div role="tabpanel" class="tab-pane fade" id="rawPrediction">
-                  <div class="placeholder jumbotron text-center">
-                    <div class="col-xs-12">
-                      <p>Loading...</p>
-                      <p><i class='fa fa-spinner fa-spin fa-3x fa-fw'></i></p>
+                  <div id="graphPatternContentPanel" class="hidden panel panel-default">
+                    <div class="panel-heading">
+                      <p>In this tab you can inspect the patterns used for prediction.</p>
+                      <div class="btn-toolbar" role="toolbar" aria-label="Graph Pattern Controls">
+                        <div class="btn-group" role="group" aria-label="SPARQL toggler">
+                          <button type="button" class="btn btn-default disabled">SPARQL:</button>
+                          <button id="btnAllSPARQLCollapse" type="button" class="btn btn-default"><i class="fa fa-compress" aria-hidden="true"></i></button>
+                          <button id="btnAllSPARQLExpand" type="button" class="btn btn-default"><i class="fa fa-expand" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="btn-group" role="group" aria-label="Target candidate toggler">
+                          <button type="button" class="btn btn-default disabled">Targets:</button>
+                          <button id="btnAllTargetsCollapse" type="button" class="btn btn-default"><i class="fa fa-compress" aria-hidden="true"></i></button>
+                          <button id="btnAllTargetsExpand" type="button" class="btn btn-default"><i class="fa fa-expand" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="btn-group" role="group" aria-label="Filter toggler">
+                          <button type="button" class="btn btn-default disabled">Filter:</button>
+                          <button id="btnFilterToggle" type="button" class="btn btn-default" autocomplete="off"><i class="fa fa-filter" aria-hidden="true"></i></button>
+                          <button id="btnFilterForget" type="button" class="btn btn-default"><i class="fa fa-remove" aria-hidden="true"></i></button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="panel-body">
+                      <div id="graphPatternContent" class="list-group"></div>
                     </div>
                   </div>
-                  <div class="hidden"></div>
                 </div>
 
                 <div role="tabpanel" class="tab-pane fade" id="fusedPrediction">
@@ -301,6 +324,8 @@
 <script>
     let demo_source = '';
     let graph_patterns = null;
+    let gp_tcs = null;
+
     const $demo = $('#demoResults');
     const $graphPatterns = $demo.find('#graphPatterns');
     const $fusedPrediction = $demo.find('#fusedPrediction');
@@ -335,23 +360,97 @@
             // }
             let sparql = gp['sparql'].replace(/^PREFIX .*$\n/mg, '');
 
-            let $sparql = $('<pre>').text(sparql);
+            let $sparql = $('<div class="collapse sparql" id="gpSparql'+ i +'">')
+                .append($('<pre>').text(sparql));
+            let $targets = $('<div class="collapse targets" id="gpTargets'+ i +'">')
+                .append($('<div class="panel panel-default">')
+                    .append($('<div class="panel-body">')
+                        .append('<div>Targets predicted by this pattern for the given stimulus as <var>?source</var> node:</div><ul></ul>')));
             let $li = $('<a id="gp' + i + '" href="#" class="list-group-item">')
-                .append('<h4 class="list-group-item-heading">GraphPattern ' + i + '</h4>')
+                .append('<h4 class="list-group-item-heading">GraphPattern ' + i +
+                        ' <small><a data-toggle="collapse" href="#gpSparql'+ i +'">SPARQL <i class="fa fa-caret-down"></i></a></small>' +
+                        ' <small><a data-toggle="collapse" href="#gpTargets'+ i +'">Targets <i class="fa fa-caret-down"></i></a></small>' +
+                        '</h4>')
                 //.append($triples)
-                .append($sparql);
+                .append($sparql)
+                .append($targets);
             $content.append($li);
         }
         $graphPatterns.find('.placeholder').addClass('hidden');
         $content.find('a.list-group-item').click(function (event) {
             event.preventDefault();
         });
-        $content.removeClass('hidden');
+        $('#btnAllSPARQLCollapse').click(function () {
+            $content.find('.collapse.sparql').collapse('hide');
+        });
+        $('#btnAllSPARQLExpand').click(function () {
+            $content.find('.collapse.sparql').collapse('show');
+        });
+        $('#btnAllTargetsCollapse').click(function () {
+            $content.find('.collapse.targets').collapse('hide');
+        });
+        $('#btnAllTargetsExpand').click(function () {
+            $content.find('.collapse.targets').collapse('show');
+        });
+        $('#graphPatternContentPanel').removeClass('hidden');
+        unset_gp_highlights();
+        $('#btnFilterToggle').click(toggleGPFilter);
+        $('#btnFilterForget').click(unset_gp_highlights);
+
+    }
+
+    function render_targets_into_graph_patterns() {
+        let $content = $('#graphPatternContent');
+        for (let i=1; i <= gp_tcs.length; i++) {
+            let tcs = gp_tcs[i-1];
+            $ul = $content.find('#gp' + i + ' .targets ul');
+            for (let target of tcs) {
+                let starget = target.replace(/http:\/\/dbpedia.org\/resource\//, 'dbr:');
+                $ul.append($('<li>').append($('<a>').attr('href', target).text(starget)));
+            }
+        }
+    }
+
+    function unset_gp_highlights() {
+        $('#graphPatternContent a.list-group-item').removeClass('active');
+        $('#gp-count').empty().append(graph_patterns.length);
+        $('#graphPatternContent').removeClass('filtered');
+        $('#btnFilterToggle').removeClass('active');
+        $fusedPrediction.find('table .btn.filter.selected').removeClass('selected');
+    }
+
+    function explain (event) {
+        unset_gp_highlights();
+        let $btn = $(this);
+        $btn.addClass('selected');
+        let $row = $btn.parents('tr');
+        let target = $row.find('td a.target').attr('href');
+        let $sel_gps = $('#graphPatternContent .targets ul>li>a[href="' + target + '"]')
+            .parents('a.list-group-item')
+            .addClass('active');
+        $('#gp-count').empty().append($sel_gps.length);
+        toggleGPFilter();
+        //$('#graphPatternContent').addClass('filtered');
+    }
+
+    function toggleGPFilter(event) {
+        let state = $('#graphPatternContent').toggleClass('filtered').hasClass('filtered');
+        let $btn = $('#btnFilterToggle');
+        if (state) {
+            $btn.addClass('active');
+        } else {
+            $btn.removeClass('active');
+        }
     }
 
     function reset() {
         // resets the GUI
         demo_source = '';
+        gp_tcs = null;
+
+        // reset targets in graph patterns
+        $('#graphPatternContent .collapse.targets ul').empty();
+        unset_gp_highlights();
 
         // show placeholder, hide table
         $fusedPrediction.find('.placeholder').removeClass('hidden');
@@ -372,6 +471,8 @@
             {source: source},
             function (data) {
                 console.log(data);
+                gp_tcs = data['graph_pattern_target_candidates'];
+
                 const $table = $fusedPrediction.find('table');
                 const $tbody = $table.find('tbody');
                 for (let fm of ['target_occs',]) {
@@ -390,7 +491,7 @@
                                 '<td class="rank">' + (i+1) + '</td>' +
                                 '<td><a class="target" href="' + target + '">' + starget + '</a></td>' +
                                 '<td>' + score + '</td>' +
-                                '<td>--</td>' +
+                                '<td><button class="btn btn-xs btn-info filter"><i class="fa fa-list" aria-hidden="true"></i></button></td>' +
                                 '<td>' +
                                     '<div class="feedback btn-group" role="group">' +
                                         '<button class="btn btn-xs btn-success feedback-positive"><i class="fa fa-check" aria-hidden="true"></i></button>' +
@@ -407,8 +508,16 @@
                     }
                 }
                 $table.find('.feedback .btn').click(feedback);
+                $table.find('.btn.filter').tooltip({
+                    'placement': 'bottom',
+                    'title': "Click here to highlight all patterns that predicted this target in the Graph Patterns tab."
+                });
                 $table.removeClass('hidden');
                 $fusedPrediction.find('.placeholder').addClass('hidden');
+
+                gp_tcs = data['graph_pattern_target_candidates'];
+                render_targets_into_graph_patterns();
+                $table.find('.btn.filter').click(explain);
             },
             'json'
         ).fail(function(jqXHR, textStatus, errorThrown) {

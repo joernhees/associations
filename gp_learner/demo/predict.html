@@ -114,6 +114,40 @@
     #fusedPrediction table>tbody>tr:hover>td> .selected>button.selected {
       opacity: 1.0;
     }
+
+    /* graph style */
+    path.link {
+    fill: none;
+    stroke: #666;
+    stroke-width: 2px;
+    }
+    path.textpath {
+        fill: none;
+        stroke: none;
+    }
+    circle {
+        fill: #ccc;
+        stroke: #333;
+        stroke-width: 2px;
+    }
+
+    .start-node {
+        fill: #4d4;
+    }
+    .end-node {
+        fill: #d44;
+    }
+
+    text {
+        font: 10px sans-serif;
+        pointer-events: none;
+    }
+
+    text.shadow {
+        stroke: #fff;
+        stroke-width: 3px;
+        stroke-opacity: .8;
+    }
   </style>
 </head>
 
@@ -354,6 +388,7 @@
 </script>
 
 <script src="gp_learner/demo/predict_config.js"></script>
+<script src="gp_learner/demo/graph_vis.js"></script>
 <script type="text/javascript">
     let demo_source = '';
     let graph_patterns = null;
@@ -393,21 +428,43 @@
             // }
             let sparql = gp['sparql'].replace(/^PREFIX .*$\n/mg, '');
 
+            let $fitnesstable = $('<table class="table table-condensed table-hover">');
+            for (let i=0; i < gp['fitness'].length; i++) {
+                $fitnesstable.append('<tr><td>'+gp['fitness_description'][i]+'</td><td>'+gp['fitness'][i].toFixed(3)+'</td></tr>');
+            }
+
             let $sparql = $('<div class="collapse sparql" id="gpSparql'+ i +'">')
-                .append($('<pre>').text(sparql));
+                .append($('<pre style="margin-bottom:10px">').text(sparql));
             let $targets = $('<div class="collapse targets" id="gpTargets'+ i +'">')
                 .append($('<div class="panel panel-default">')
                     .append($('<div class="panel-body">')
                         .append('<div>Targets predicted by this pattern for the given stimulus as <var>?source</var> node:</div><ul></ul>')));
+            let $info = $('<div class="collapse info" id="gpInfo'+ i +'">')
+                .append($('<div class="row">')
+                    .append($('<div class="col-md-6" style="height: 420px; margin-bottom: 10px">')
+                        .append($('<div class="panel panel-default" style="height: 100%">')
+                        .append($('<div class="canvas" style="height: 100%" id="gpGraph'+ i +'" data-triples="'+ btoa(JSON.stringify(gp['graph_triples'])) +'">'))))
+                    .append($('<div class="col-md-6" style="height: 420px; margin-bottom: 10px">')
+                        .append($('<div class="panel panel-default" style="height: 100%; margin: 0">')
+                            .append($('<div class="panel-body">')
+                                .append($('<h4>Fitness:</h4>'))
+                                .append($fitnesstable)))));
             let $li = $('<li id="gp' + i + '" class="list-group-item graphPattern">')
                 .append('<h4 class="list-group-item-heading">GraphPattern ' + i +
                         ' <small><a data-toggle="collapse" href="#gpSparql'+ i +'">SPARQL <i class="fa fa-caret-down"></i></a></small>' +
+                        ' <small><a data-toggle="collapse" href="#gpInfo'+ i +'">Graph & Info <i class="fa fa-caret-down"></i></a></small>' +
                         ' <small><a data-toggle="collapse" href="#gpTargets'+ i +'">Targets <span class="targetCount badge">0</span><i class="fa fa-caret-down"></i></a></small>' +
                         '</h4>')
                 //.append($triples)
                 .append($sparql)
+                .append($info)
                 .append($targets);
             $graphPatternContent.append($li);
+            $('#gpInfo'+ i).on('shown.bs.collapse', function () {
+                GraphVis.draw($(this).find('.canvas').attr('id'));
+            }).on('hidden.bs.collapse', function () {
+                GraphVis.undraw($(this).find('.canvas').attr('id'));
+            });
         }
         $graphPatterns.find('.placeholder').addClass('hidden');
         $graphPatternContent.find('.list-group-item.graphPattern').click(function (event) {

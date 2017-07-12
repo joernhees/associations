@@ -354,7 +354,7 @@
 </script>
 
 <script src="gp_learner/demo/predict_config.js"></script>
-<script>
+<script type="text/javascript">
     let demo_source = '';
     let graph_patterns = null;
     let gp_tcs = null;
@@ -497,6 +497,7 @@
     }
 
     function predict(source) {
+        reset();
         if (!source.startsWith('http://dbpedia.org/resource/')) {
             return;
         }
@@ -595,7 +596,6 @@
 
     let $stimulusAutocomplete = $stimulusForm.find('.autocomplete').typeahead({
         'source': function (query, process) {
-            reset();
             return $.get(
                 '//en.wikipedia.org/w/api.php',
                 {

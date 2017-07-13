@@ -1,4 +1,6 @@
 let MAX_RESULT_ROWS = 100;
+let DEFAULT_FUSION_METHOD = 'gp_precisions';
+
 let gpl_endpoint = "http://localhost:8080/api";
 let gpl_endpoint_ping = gpl_endpoint + '/ping';
 let gpl_endpoint_graph_patterns = gpl_endpoint + '/graph_patterns';

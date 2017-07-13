@@ -578,7 +578,10 @@
         });
     }
 
-    function render_fused_prediction_results(fm='gp_precisions') {
+    function render_fused_prediction_results(fm) {
+        if (!fm) {
+            fm = DEFAULT_FUSION_METHOD;
+        }
         $('#fusionDropdownButtonLabel').text(fm.replace(/_/g, ' '));
         $fusionDropdown.find('li').removeClass('active');
         $fusionDropdown.find('a[href="#' + fm + '"]').parent().addClass('active');

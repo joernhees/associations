@@ -224,7 +224,9 @@
                   <input class="form-control autocomplete"
                          type="text"
                          autocomplete="off"
-                         placeholder="e.g., Dog, Cat, House, Horse"/>
+                         placeholder="e.g., Dog, Cat, House, Horse"
+                         disabled
+                  />
                   <span class="input-group-btn">
                     <button type="submit" class="btn btn-default" data-loading-text="<i class='fa fa-spinner fa-spin fa-large'></i> predicting...">Submit</button>
                   </span>
@@ -403,10 +405,13 @@
             function (data) {
                 console.log('loaded gps', data);
                 graph_patterns = data['graph_patterns'];
+                $stimulusForm.find('input').removeAttr('disabled');
                 render_graph_patterns();
             },
             'json'
-        );
+        ).fail(function(jqXHR, textStatus, errorThrown) {
+            $demo.prepend('<div class="alert alert-danger" role="alert">Could not load graph patterns. Please retry in a few minutes. Should the error still exist, please <a href="#moreInfo">let us know</a>.</div>')
+        });
     }
     $(load_graph_patterns);
 
@@ -439,11 +444,11 @@
                 .append($('<div class="row">')
                     .append($('<div class="col-md-6" style="height: 420px; margin-bottom: 10px">')
                         .append($('<div class="panel panel-default" style="height: 100%">')
-                        .append($('<div class="canvas" style="height: 100%" id="gpGraph'+ i +'" data-triples="'+ btoa(JSON.stringify(gp['graph_triples'])) +'">'))))
+                        .append($('<div class="canvas" style="height: 100%" id="gpGraph'+ i +'">'))))
                     .append($('<div class="col-md-6" style="height: 420px; margin-bottom: 10px">')
                         .append($('<div class="panel panel-default" style="height: 100%; margin: 0">')
                             .append($('<div class="panel-body">')
-                                .append($('<h4>Fitness:</h4>'))
+                                .append($('<h4>Fitness: <small>(from graph pattern learner training)</small></h4>'))
                                 .append($fitnesstable)))));
             let $li = $('<li id="gp' + i + '" class="list-group-item graphPattern">')
                 .append('<h4 class="list-group-item-heading">GraphPattern ' + i +
@@ -457,7 +462,7 @@
                 .append($targets);
             $graphPatternContent.append($li);
             $('#gpInfo'+ i).on('shown.bs.collapse', function () {
-                GraphVis.draw($(this).find('.canvas').attr('id'));
+                GraphVis.draw($(this).find('.canvas').attr('id'), gp['graph_triples']);
             }).on('hidden.bs.collapse', function () {
                 GraphVis.undraw($(this).find('.canvas').attr('id'));
             });
@@ -522,7 +527,7 @@
         toggleGPFilter();
         $('#graphPatternsTabLink').tab('show');
         $('html, body').animate({
-            scrollTop: $("#demoResults").offset().top
+            scrollTop: $("#demoResults").offset().top - 60  // for navbar
         }, 200);
         $graphPatternContent.find('.collapse.sparql').collapse('show');
         $graphPatternContent.find('.collapse.targets').collapse('show');
@@ -624,10 +629,11 @@
     }
 
     function predict(source) {
-        reset();
+        if (!graph_patterns) return;
         if (!source.startsWith('http://dbpedia.org/resource/')) {
             return;
         }
+        reset();
         let $input = $stimulusForm.find('input');
         $input.prop('disabled', true).val(source).text(source).blur();
         let $btn = $stimulusForm.find('button').button('loading');
@@ -653,6 +659,8 @@
             },
             'json'
         ).fail(function(jqXHR, textStatus, errorThrown) {
+            $demo.prepend('<div class="alert alert-danger" role="alert">Prediction resulted in an error. Please retry in a few minutes. Should the error still exist, please <a href="#moreInfo">let us know</a>.</div>');
+            console.exception(jqXHR, textStatus, errorThrown);
         }).always(function () {
             $input.prop('disabled', false);
             $btn.button('reset');
@@ -729,8 +737,8 @@
     });
     $stimulusForm.submit(function (event) {
         let source = $(this).find('.autocomplete').val();
-        predict(source);
         event.preventDefault();
+        predict(source);
         return false;
     });
 

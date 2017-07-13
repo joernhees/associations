@@ -1,7 +1,3 @@
-/**
- * Created by rouven on 12.07.17.
- */
-
 GraphVis = {
     GraphView: {
         FONTSIZE: 12,
@@ -528,11 +524,6 @@ GraphVis = {
     _graphViews: {},
 
     draw: function (canvasId, triples) {
-        try {
-            triples = triples || JSON.parse(atob($('#' + canvasId).attr("data-triples")));
-        } catch (SyntaxError) {
-            return;
-        }
         let graphView;
         let newGV = false;
         if (!this._graphViews.hasOwnProperty(canvasId)) {

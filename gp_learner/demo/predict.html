@@ -621,10 +621,11 @@
         }
 
         $table.find('.feedback .btn')
-            .tooltip({
-                'placement': 'bottom',
-                'title': "Let us know if this response fits (yes/no). Your feedback allows us to improve future versions of our algorithm."
-            })
+            // looks weird:
+            //.tooltip({
+            //    'placement': 'bottom',
+            //    'title': "Let us know if this response fits (yes/no). Your feedback allows us to improve future versions of our algorithm."
+            //})
             .click(feedback);
         $table.find('.btn.filter')
             .tooltip({

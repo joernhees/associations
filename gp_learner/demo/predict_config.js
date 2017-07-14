@@ -1,5 +1,5 @@
 let MAX_RESULT_ROWS = 100;
-let DEFAULT_FUSION_METHOD = 'gp_precisions';
+let DEFAULT_FUSION_METHOD = 'precisions';
 
 //let gpl_endpoint = "http://localhost:8080/api";
 let gpl_endpoint = "https://projects.dfki.uni-kl.de/graph-pattern-learner/api";

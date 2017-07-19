@@ -29,6 +29,7 @@
 
   <!-- Plugin CSS -->
   <link rel="stylesheet" href="css/animate.min.css" type="text/css">
+  <link rel="stylesheet" href="css/bootstrap-tour.min.css" type="text/css" >
 
   <!-- Custom CSS -->
   <link rel="stylesheet" href="css/creative.css" type="text/css">
@@ -147,6 +148,12 @@
         stroke: #fff;
         stroke-width: 3px;
         stroke-opacity: .8;
+    }
+
+    /* stuff needed for the tour to look good */
+    .btn-group > .btn.tour-step-backdrop.tour-tour-element,
+    .list-group > .list-group-item.tour-step-backdrop.tour-tour-element {
+        z-index: 1101;
     }
   </style>
 </head>
@@ -294,7 +301,7 @@
                       <p>In this tab you can see the fused prediction results for your given stimulus.</p>
                       <div class="btn-toolbar" role="toolbar" aria-label="Fused Prediction Controls">
                         <div class="btn-group" role="group">
-                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <button id="fusionDropdownButton" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Fusion Model:
                             <span id="fusionDropdownButtonLabel"></span>
                             <span class="caret"></span>
@@ -369,6 +376,7 @@
 <script src="js/jquery.fittext.js"></script>
 <script src="js/wow.min.js"></script>
 <script src="js/bootstrap3-typeahead.min.js"></script>
+<script src="js/bootstrap-tour.js"></script>
 
 <!-- Custom Theme JavaScript -->
 <script src="js/creative.js"></script>
@@ -631,7 +639,7 @@
         $fusedPrediction.find('.placeholder').addClass('hidden');
     }
 
-    function predict(source) {
+    function predict(source, cb) {
         if (!graph_patterns) return;
         if (!source.startsWith('http://dbpedia.org/resource/')) {
             return;
@@ -659,6 +667,7 @@
                 render_fusion_dropdown();
                 render_fused_prediction_results();
                 render_targets_into_graph_patterns();
+                if (cb != null && typeof cb == 'function') cb();
             },
             'json'
         ).fail(function(jqXHR, textStatus, errorThrown) {
@@ -692,7 +701,7 @@
 
     let $stimulusAutocomplete = $stimulusForm.find('.autocomplete').typeahead({
         'source': function (query, process) {
-            return $.get(
+            $.get(
                 '//en.wikipedia.org/w/api.php',
                 {
                     'action': 'opensearch',
@@ -713,7 +722,8 @@
                             'uri': uris[i]
                         });
                     }
-                    return process(items);
+                    process(items);
+                    $stimulusAutocomplete.trigger('autocomplete.done');
                 },
                 'json'
             );
@@ -767,6 +777,7 @@
     ga('create', 'UA-81338887-1', 'auto');
     ga('send', 'pageview');
 </script>
+<script src="gp_learner/demo/tour.js"></script>
 
 </body>
 

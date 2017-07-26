@@ -432,6 +432,17 @@
     const $fusedPrediction = $demo.find('#fusedPrediction');
     const $fusedPredictionContent = $fusedPrediction.find('#fusedPredictionContent');
     const $fusionDropdown = $fusedPredictionContent.find('#fusionDropdown');
+    const FM_EXPLANATION = {
+        // TODO: Fill these explanations!
+        'f_measures': '1 nices measurement so vong f her',
+        'f_measures_precisions': 'It does precise things',
+        'gp_precisions': 'Also precise but w.r.t. graph patterns',
+        'gp_precisions_precisions': 'Makes precisions precise again!',
+        'precisions': 'Simply precision',
+        'scores': 'High score racing!',
+        'scores_precisions': 'Let\'s see how precise the high score is.',
+        'target_occs': 'Something with occurencies'
+    };
 
     // https://stackoverflow.com/questions/15690781/twitter-bootstrap-popover-trigger-for-desktop-and-mobile-platforms
     const isTouchDevice = ("ontouchstart" in window) || window.DocumentTouch && document instanceof DocumentTouch;
@@ -612,7 +623,9 @@
             // console.log('render fusion dropdown:', fm, val);
             if (val.length > 1) {
                 let fms = fm.replace(/_/g, ' ');
-                $fusionDropdown.append('<li><a href="#' + fm + '">' + fms + '</a></li>');
+                $fusionDropdown.append('<li data-toggle="tooltip" data-placement="right"' +
+                    'title="'+FM_EXPLANATION[fm]+'" data-container="#fusedPredictionContent">' +
+                    '<a href="#' + fm + '">' + fms + '</a></li>');
             }
         }
         $fusionDropdown.find('a').click(function (event) {

@@ -214,7 +214,10 @@
   <div class="container">
     <div class="row">
       <div class="col-xs-12 text-center">
-        <h2 class="section-heading">Demo</h2>
+        <h2 class="section-heading">
+          Demo
+          <i id="start-tour" class="fa fa-question-circle-o" role="button" aira-label="get help"></i>
+        </h2>
         <hr class="primary">
       </div>
     </div>
@@ -495,7 +498,7 @@
         unset_gp_highlights();
         $('#btnFilterToggle').click(toggleGPFilter);
         $('#btnFilterForget').click(unset_gp_highlights);
-
+        DemoTour.start();
     }
 
     function render_targets_into_graph_patterns() {

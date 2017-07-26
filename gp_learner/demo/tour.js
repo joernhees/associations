@@ -1,8 +1,33 @@
+var DemoTour;
+
 {
     let DEMO_SEARCH_TERM = 'Dog';
     let DEMO_SEARCH_URI = 'http://dbpedia.org/resource/Dog';
+    let DEMO_EXPLAIN_RESULT_TERM = 'Grape';
+    let DEMO_EXPLAIN_RESULT_URI = 'http://dbpedia.org/resource/Grape';
     let demoSearchInterval;
     let $search = $('#stimulusForm').find('input[type=text]');
+    let filterButtonSelector = '#fusedPredictionContent .table tr td:has(a[href="'+
+        DEMO_EXPLAIN_RESULT_URI+'"]) ~ td button.filter';
+    // ouch, I think my eyes just started bleeding
+
+    let forceShowUnfilteredPatterns = function () {
+        return new Promise((resolve, reject) => {
+            let $tabLink = $('#graphPatternsTabLink');
+            unset_gp_highlights();
+            let handler = function (event) {
+                $tabLink.off('shown.bs.tab', handler);
+                resolve();
+            };
+            if ($tabLink.parent().hasClass('active')) {
+                resolve();
+            } else {
+                $tabLink
+                    .on('shown.bs.tab', handler)
+                    .tab('show');
+            }
+        });
+    };
 
     let forceExampleLoaded = function() {
         if ($search.text() != DEMO_SEARCH_URI) {
@@ -38,41 +63,43 @@
         });
     };
 
-    let forceShowExplanation = function(number) {
+    let forceShowExplanation = function() {
         return new Promise((resolve, reject) => {
             let $tabLink = $('#graphPatternsTabLink');
             forceExampleLoaded().then(() => {
-                let selector = '#fusedPredictionContent .table tr:eq(' + number + ') button.filter';
                 let handler = function (event) {
                     $tabLink.off('shown.bs.tab', handler);
                     resolve();
                 };
                 if ($tabLink.parent().hasClass('active')) {
-                    $(selector).click();
+                    $(filterButtonSelector).click();
                     resolve();
                 } else {
                     $tabLink
                         .on('shown.bs.tab', handler)
                         .tab('show');
-
-                    $(selector).click();
+                    $(filterButtonSelector).click();
                 }
             });
         });
     };
 
-    let tour = new Tour({
+    DemoTour = new Tour({
+        debug: true,
         steps: [
             {
                 element: '#graphPatternContentPanel',
                 title: 'The learned patterns',
                 content: 'Here you can see all patterns learned and used for ' +
-                         'prediction. We\'ll come back to that later.'
+                         'prediction. We\'ll come back to that later.',
+                onShow: function (tour) {
+                    return forceShowUnfilteredPatterns();
+                }
             },
             {
                 element: '#stimulusForm',
                 title: 'Do Search',
-                content: 'Dog!',
+                content: DEMO_SEARCH_TERM,
                 placement: 'top',
                 onShown: function (tour) {
                     let typeStep = 0;
@@ -132,7 +159,7 @@
                 onShow: function (tour) {
                     $('.popover.tour-tour').find('.popover-title').text('Please wait');
                     $('.popover.tour-tour').find('.popover-content').text('loading');
-                    return forceExampleLoaded();
+                    return forceShowFusedResults();
                 }
             },
             {
@@ -144,11 +171,11 @@
                 }
             },
             {
-                element: '#fusedPredictionContent .table tr:eq(13) button.filter',
+                element: filterButtonSelector,
                 title: 'Get explanations of predictions',
                 content: 'One might wonder why the algorithm lists '+
-                         '&ldquo;Grape&rdquo; as associated with '+
-                         '&ldquo;Dog&rdquo;. Click here to see.',
+                         '&ldquo;'+DEMO_EXPLAIN_RESULT_TERM+'&rdquo; as associated with '+
+                         '&ldquo;'+DEMO_SEARCH_TERM+'&rdquo;. Click here to see.',
                 onShow: function () {
                     return forceShowFusedResults();
                 },
@@ -157,10 +184,10 @@
                 element: '#btnFilterToggle',
                 title: 'See the contributing patterns',
                 content: 'The patterns are automatically filtered. Only those '+
-                         'that contribute to &ldquo;Dog&rdquo; &ndash; '+
-                         '&ldquo;Grape&rdquo; are shown.',
+                         'that contribute to &ldquo;'+DEMO_SEARCH_TERM+'&rdquo; &ndash; '+
+                         '&ldquo;'+DEMO_EXPLAIN_RESULT_TERM+'&rdquo; are shown.',
                 onShow: function (tour) {
-                    return forceShowExplanation(13);
+                    return forceShowExplanation();
                 }
             },
             {
@@ -168,7 +195,7 @@
                 title: 'TODO: explain the pattern list',
                 content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec ut metus ullamcorper, venenatis quam id, iaculis libero. Mauris scelerisque dui gravida rutrum fermentum. Aenean nec eleifend nisi.',
                 onShow: function (tour) {
-                    return forceShowExplanation(13);
+                    return forceShowExplanation();
                 }
             }
 
@@ -178,11 +205,11 @@
     });
 
     // Initialize the tour
-    tour.init();
+    DemoTour.init();
 
     $(function () {
-        tour.restart();
-        // Start the tour
-        tour.start(true);
+        $('#start-tour').click(function () {
+            DemoTour.restart();
+        })
     });
 }

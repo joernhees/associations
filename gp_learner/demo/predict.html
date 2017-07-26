@@ -270,18 +270,42 @@
                       <div class="btn-toolbar" role="toolbar" aria-label="Graph Pattern Controls">
                         <div class="btn-group" role="group" aria-label="SPARQL toggler">
                           <button type="button" class="btn btn-default disabled">SPARQL:</button>
-                          <button id="btnAllSPARQLExpand" type="button" class="btn btn-default"><i class="fa fa-expand" aria-hidden="true"></i></button>
-                          <button id="btnAllSPARQLCollapse" type="button" class="btn btn-default"><i class="fa fa-compress" aria-hidden="true"></i></button>
+                          <button id="btnAllSPARQLExpand" type="button" class="btn btn-default"
+                                  data-toggle="tooltip" title="Show all SPARQL queries"
+                                  data-container="#graphPatternContentPanel .btn-toolbar:first()" data-placement="bottom">
+                            <i class="fa fa-expand" aria-hidden="true"></i>
+                          </button>
+                          <button id="btnAllSPARQLCollapse" type="button" class="btn btn-default"
+                                  data-toggle="tooltip" title="Hide all SPARQL queries"
+                                  data-container="#graphPatternContentPanel .btn-toolbar:first()" data-placement="bottom">
+                            <i class="fa fa-compress" aria-hidden="true"></i>
+                          </button>
                         </div>
                         <div class="btn-group" role="group" aria-label="Target candidate toggler">
                           <button type="button" class="btn btn-default disabled">Targets:</button>
-                          <button id="btnAllTargetsExpand" type="button" class="btn btn-default"><i class="fa fa-expand" aria-hidden="true"></i></button>
-                          <button id="btnAllTargetsCollapse" type="button" class="btn btn-default"><i class="fa fa-compress" aria-hidden="true"></i></button>
+                          <button id="btnAllTargetsExpand" type="button" class="btn btn-default"
+                                  data-toggle="tooltip" title="Show all targets"
+                                  data-container="#graphPatternContentPanel .btn-toolbar:first()" data-placement="bottom">
+                            <i class="fa fa-expand" aria-hidden="true"></i>
+                          </button>
+                          <button id="btnAllTargetsCollapse" type="button" class="btn btn-default"
+                                  data-toggle="tooltip" title="Hide all targets"
+                                  data-container="#graphPatternContentPanel .btn-toolbar:first()" data-placement="bottom">
+                            <i class="fa fa-compress" aria-hidden="true"></i>
+                          </button>
                         </div>
                         <div class="btn-group" role="group" aria-label="Filter toggler">
                           <button type="button" class="btn btn-default disabled">Filter:</button>
-                          <button id="btnFilterToggle" type="button" class="btn btn-default" autocomplete="off"><i class="fa fa-filter" aria-hidden="true"></i></button>
-                          <button id="btnFilterForget" type="button" class="btn btn-default"><i class="fa fa-remove" aria-hidden="true"></i></button>
+                          <button id="btnFilterToggle" type="button" class="btn btn-default" autocomplete="off"
+                                  data-toggle="tooltip" title="Toggle pattern filter"
+                                  data-container="#graphPatternContentPanel .btn-toolbar:first()" data-placement="bottom">
+                            <i class="fa fa-filter" aria-hidden="true"></i>
+                          </button>
+                          <button id="btnFilterForget" type="button" class="btn btn-default"
+                                  data-toggle="tooltip" title="Clear pattern filter"
+                                  data-container="#graphPatternContentPanel .btn-toolbar:first()" data-placement="bottom">
+                            <i class="fa fa-remove" aria-hidden="true"></i>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -408,6 +432,15 @@
     const $fusedPrediction = $demo.find('#fusedPrediction');
     const $fusedPredictionContent = $fusedPrediction.find('#fusedPredictionContent');
     const $fusionDropdown = $fusedPredictionContent.find('#fusionDropdown');
+
+    // https://stackoverflow.com/questions/15690781/twitter-bootstrap-popover-trigger-for-desktop-and-mobile-platforms
+    const isTouchDevice = ("ontouchstart" in window) || window.DocumentTouch && document instanceof DocumentTouch;
+    $(function () {
+          $('body').tooltip({
+              selector: '[data-toggle="tooltip"]',
+              trigger: isTouchDevice ? "focus" : "hover"
+          });
+    });
 
     function load_graph_patterns() {
         $.get(
@@ -611,15 +644,25 @@
                 starget = starget.slice(0, 30) + '...';
             }
             $tbody.append(
-                '<tr>' +
+                '<tr id="prediction-'+i+'">' +
                     '<td class="rank">' + (i+1) + '</td>' +
                     '<td><a class="target" href="' + target + '">' + starget + '</a></td>' +
                     '<td>' + score.toFixed(3) + '</td>' +
-                    '<td><button class="btn btn-xs btn-info filter"><i class="fa fa-list" aria-hidden="true"></i></button></td>' +
+                    '<td><button class="btn btn-xs btn-info filter" data-placement="bottom" data-toggle="tooltip"' +
+                                'title="Click here to highlight all patterns that predicted this target in the Graph Patterns tab.">' +
+                        '<i class="fa fa-list" aria-hidden="true"></i></button>' +
+                    '</td>' +
                     '<td>' +
                         '<div class="feedback btn-group" role="group">' +
-                            '<button class="btn btn-xs btn-success feedback-positive"><i class="fa fa-check" aria-hidden="true"></i></button>' +
-                            '<button class="btn btn-xs btn-warning feedback-negative"><i class="fa fa-times" aria-hidden="true"></i></button>' +
+                            '<button class="btn btn-xs btn-success feedback-positive"  data-placement="bottom" data-toggle="tooltip"' +
+                                     'title="We appreciate anonymous feedback: click here if the predicted association fits."' +
+                                     'data-container="#prediction-'+i+'">' +
+                                '<i class="fa fa-check" aria-hidden="true"></i></button>' +
+                            '<button class="btn btn-xs btn-warning feedback-negative"  data-placement="bottom" data-toggle="tooltip"' +
+                                     'title="We appreciate anonymous feedback: click here if the predicted association is bad."' +
+                                     'data-container="#prediction-'+i+'">' +
+                                '<i class="fa fa-times" aria-hidden="true"></i></button>' +
+                            //'<button class="btn btn-xs btn-warning feedback-negative"><i class="fa fa-times" aria-hidden="true"></i></button>' +
                         '</div>' +
                     '</td>' +
                 '</tr>'
@@ -632,12 +675,7 @@
         }
 
         $table.find('.feedback .btn').click(feedback);
-        $table.find('.btn.filter')
-            .tooltip({
-                'placement': 'bottom',
-                'title': "Click here to highlight all patterns that predicted this target in the Graph Patterns tab."
-            })
-            .click(explain);
+        $table.find('.btn.filter').click(explain);
         $fusedPredictionContent.removeClass('hidden');
         $fusedPrediction.find('.placeholder').addClass('hidden');
     }

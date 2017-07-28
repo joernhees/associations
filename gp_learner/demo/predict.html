@@ -661,18 +661,18 @@
                     '<td class="rank">' + (i+1) + '</td>' +
                     '<td><a class="target" href="' + target + '">' + starget + '</a></td>' +
                     '<td>' + score.toFixed(3) + '</td>' +
-                    '<td><button class="btn btn-xs btn-info filter" data-placement="bottom" data-toggle="tooltip"' +
+                    '<td><button class="btn btn-xs btn-info filter" data-placement="bottom" data-toggle="tooltip" ' +
                                 'title="Click here to highlight all patterns that predicted this target in the Graph Patterns tab.">' +
                         '<i class="fa fa-list" aria-hidden="true"></i></button>' +
                     '</td>' +
                     '<td>' +
                         '<div class="feedback btn-group" role="group">' +
-                            '<button class="btn btn-xs btn-success feedback-positive"  data-placement="bottom" data-toggle="tooltip"' +
-                                     'title="We appreciate anonymous feedback: click here if the predicted association fits."' +
+                            '<button class="btn btn-xs btn-success feedback-positive"  data-placement="bottom" data-toggle="tooltip" ' +
+                                     'title="We appreciate anonymous feedback: click here if the predicted association fits." ' +
                                      'data-container="#prediction-'+i+'">' +
                                 '<i class="fa fa-check" aria-hidden="true"></i></button>' +
-                            '<button class="btn btn-xs btn-warning feedback-negative"  data-placement="bottom" data-toggle="tooltip"' +
-                                     'title="We appreciate anonymous feedback: click here if the predicted association is bad."' +
+                            '<button class="btn btn-xs btn-warning feedback-negative"  data-placement="bottom" data-toggle="tooltip" ' +
+                                     'title="We appreciate anonymous feedback: click here if the predicted association is bad." ' +
                                      'data-container="#prediction-'+i+'">' +
                                 '<i class="fa fa-times" aria-hidden="true"></i></button>' +
                             //'<button class="btn btn-xs btn-warning feedback-negative"><i class="fa fa-times" aria-hidden="true"></i></button>' +
@@ -721,7 +721,7 @@
                 render_fusion_dropdown();
                 render_fused_prediction_results();
                 render_targets_into_graph_patterns();
-                if (cb != null && typeof cb == 'function') cb();
+                if (cb !== null && typeof cb === 'function') cb();
             },
             'json'
         ).fail(function(jqXHR, textStatus, errorThrown) {

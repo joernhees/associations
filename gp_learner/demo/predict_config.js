@@ -1,7 +1,6 @@
 let MAX_RESULT_ROWS = 100;
 let DEFAULT_FUSION_METHOD = 'gp_precisions';
 
-//let gpl_endpoint = "http://192.168.41.43:8080/api";
 //let gpl_endpoint = "http://localhost:8080/api";
 let gpl_endpoint = "http://projects.dfki.uni-kl.de/graph-pattern-learner/api";
 let gpl_endpoint_ping = gpl_endpoint + '/ping';

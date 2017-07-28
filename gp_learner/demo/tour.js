@@ -30,7 +30,7 @@ var DemoTour;
     };
 
     let forceExampleLoaded = function() {
-        if ($search.text() != DEMO_SEARCH_URI) {
+        if ($search.text() !== DEMO_SEARCH_URI) {
             return new Promise((resolve, reject) => {
                     predict(DEMO_SEARCH_URI, function () {
                         $search.val(DEMO_SEARCH_URI);
@@ -104,13 +104,13 @@ var DemoTour;
                 onShown: function (tour) {
                     let typeStep = 0;
                     demoSearchInterval = window.setInterval(function () {
-                        if(typeStep == 0){
+                        if(typeStep === 0){
                             $search.focus();
                         }
                         if (typeStep < DEMO_SEARCH_TERM.length) {
                             $search.val($search.val()+DEMO_SEARCH_TERM[typeStep]);
                             $search.typeahead('lookup');
-                        } else if (typeStep == DEMO_SEARCH_TERM.length) {
+                        } else if (typeStep === DEMO_SEARCH_TERM.length) {
                             $search.focus();
                             $search.val(DEMO_SEARCH_TERM);
                             $search.typeahead('lookup');
@@ -157,8 +157,9 @@ var DemoTour;
                 content: 'Each graph pattern results in an unranked list of ' +
                          'candidates. Several methods to fuse them are available.',
                 onShow: function (tour) {
-                    $('.popover.tour-tour').find('.popover-title').text('Please wait');
-                    $('.popover.tour-tour').find('.popover-content').text('loading');
+                    let $tour = $('.popover.tour-tour');
+                    $tour.find('.popover-title').text('Please wait');
+                    $tour.find('.popover-content').text('loading');
                     return forceShowFusedResults();
                 }
             },

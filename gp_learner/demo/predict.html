@@ -214,11 +214,9 @@
   <div class="container">
     <div class="row">
       <div class="col-xs-12 text-center">
-        <h2 class="section-heading">
-          Demo
-          <i id="start-tour" class="fa fa-question-circle-o" role="button" aira-label="get help"></i>
-        </h2>
+        <h2 class="section-heading">Demo</h2>
         <hr class="primary">
+        <button id="start-tour" class="btn btn-sm btn-primary">Walk me through <i class="fa fa-question-circle-o"></i></button>
       </div>
     </div>
   </div>
@@ -297,7 +295,7 @@
                         <div class="btn-group" role="group" aria-label="Filter toggler">
                           <button type="button" class="btn btn-default disabled">Filter:</button>
                           <button id="btnFilterToggle" type="button" class="btn btn-default" autocomplete="off"
-                                  data-toggle="tooltip" title="Toggle pattern filter"
+                                  data-toggle="tooltip" title="Toggle pattern filter. (Set via explain button in Fused Prediction Results tab.)"
                                   data-container="#graphPatternContentPanel .btn-toolbar:first()" data-placement="bottom">
                             <i class="fa fa-filter" aria-hidden="true"></i>
                           </button>
@@ -433,15 +431,14 @@
     const $fusedPredictionContent = $fusedPrediction.find('#fusedPredictionContent');
     const $fusionDropdown = $fusedPredictionContent.find('#fusionDropdown');
     const FM_EXPLANATION = {
-        // TODO: Fill these explanations!
-        'f_measures': '1 nices measurement so vong f her',
-        'f_measures_precisions': 'It does precise things',
-        'gp_precisions': 'Also precise but w.r.t. graph patterns',
-        'gp_precisions_precisions': 'Makes precisions precise again!',
-        'precisions': 'Simply precision',
-        'scores': 'High score racing!',
-        'scores_precisions': 'Let\'s see how precise the high score is.',
-        'target_occs': 'Something with occurencies'
+        'target_occs': 'Simply counts how often a target occurred, so how many graph patterns generated a target candidate. The score is the actual count and the results are ordered descending.',
+        'precisions': 'Similar to target_occs but normalized per pattern: Each pattern gets a total vote of 1, which it distributes over its generated target candidates. Hence, the score here is the sum over the normalized contributions from each pattern.',
+        'scores': 'Similar to target_occs, but instead of adding 1 per occurrence, the graph-pattern\'s score from training is summed up.',
+        'f_measures': 'Similar to target_occs, but instead of adding 1 per occurrence, the graph-pattern\'s f_measure from training is summed up.',
+        'gp_precisions': 'Similar to target_occs, but instead of adding 1 per occurrence, the graph-pattern\'s precision from training is summed up.',
+        'scores_precisions': 'Similar to scores but analogously to precisions each graph pattern distributes its scores score from training over its target candidates at prediction time.',
+        'f_measures_precisions': 'Similar to f_measures but analogously to precisions each graph pattern distributes its f_measures score from training over its target candidates at prediction time.',
+        'gp_precisions_precisions': 'Similar to gp_precisions but analogously to precisions each graph pattern distributes its gp_precisions score from training over its target candidates at prediction time.',
     };
 
     // https://stackoverflow.com/questions/15690781/twitter-bootstrap-popover-trigger-for-desktop-and-mobile-platforms
@@ -542,7 +539,6 @@
         unset_gp_highlights();
         $('#btnFilterToggle').click(toggleGPFilter);
         $('#btnFilterForget').click(unset_gp_highlights);
-        DemoTour.start();
     }
 
     function render_targets_into_graph_patterns() {

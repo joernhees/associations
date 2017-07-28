@@ -29,6 +29,7 @@
 
   <!-- Plugin CSS -->
   <link rel="stylesheet" href="css/animate.min.css" type="text/css">
+  <link rel="stylesheet" href="css/bootstrap-tour.min.css" type="text/css" >
 
   <!-- Custom CSS -->
   <link rel="stylesheet" href="css/creative.css" type="text/css">
@@ -148,6 +149,12 @@
         stroke-width: 3px;
         stroke-opacity: .8;
     }
+
+    /* stuff needed for the tour to look good */
+    .btn-group > .btn.tour-step-backdrop.tour-tour-element,
+    .list-group > .list-group-item.tour-step-backdrop.tour-tour-element {
+        z-index: 1101;
+    }
   </style>
 </head>
 
@@ -207,7 +214,10 @@
   <div class="container">
     <div class="row">
       <div class="col-xs-12 text-center">
-        <h2 class="section-heading">Demo</h2>
+        <h2 class="section-heading">
+          Demo
+          <i id="start-tour" class="fa fa-question-circle-o" role="button" aira-label="get help"></i>
+        </h2>
         <hr class="primary">
       </div>
     </div>
@@ -260,18 +270,42 @@
                       <div class="btn-toolbar" role="toolbar" aria-label="Graph Pattern Controls">
                         <div class="btn-group" role="group" aria-label="SPARQL toggler">
                           <button type="button" class="btn btn-default disabled">SPARQL:</button>
-                          <button id="btnAllSPARQLExpand" type="button" class="btn btn-default"><i class="fa fa-expand" aria-hidden="true"></i></button>
-                          <button id="btnAllSPARQLCollapse" type="button" class="btn btn-default"><i class="fa fa-compress" aria-hidden="true"></i></button>
+                          <button id="btnAllSPARQLExpand" type="button" class="btn btn-default"
+                                  data-toggle="tooltip" title="Show all SPARQL queries"
+                                  data-container="#graphPatternContentPanel .btn-toolbar:first()" data-placement="bottom">
+                            <i class="fa fa-expand" aria-hidden="true"></i>
+                          </button>
+                          <button id="btnAllSPARQLCollapse" type="button" class="btn btn-default"
+                                  data-toggle="tooltip" title="Hide all SPARQL queries"
+                                  data-container="#graphPatternContentPanel .btn-toolbar:first()" data-placement="bottom">
+                            <i class="fa fa-compress" aria-hidden="true"></i>
+                          </button>
                         </div>
                         <div class="btn-group" role="group" aria-label="Target candidate toggler">
                           <button type="button" class="btn btn-default disabled">Targets:</button>
-                          <button id="btnAllTargetsExpand" type="button" class="btn btn-default"><i class="fa fa-expand" aria-hidden="true"></i></button>
-                          <button id="btnAllTargetsCollapse" type="button" class="btn btn-default"><i class="fa fa-compress" aria-hidden="true"></i></button>
+                          <button id="btnAllTargetsExpand" type="button" class="btn btn-default"
+                                  data-toggle="tooltip" title="Show all targets"
+                                  data-container="#graphPatternContentPanel .btn-toolbar:first()" data-placement="bottom">
+                            <i class="fa fa-expand" aria-hidden="true"></i>
+                          </button>
+                          <button id="btnAllTargetsCollapse" type="button" class="btn btn-default"
+                                  data-toggle="tooltip" title="Hide all targets"
+                                  data-container="#graphPatternContentPanel .btn-toolbar:first()" data-placement="bottom">
+                            <i class="fa fa-compress" aria-hidden="true"></i>
+                          </button>
                         </div>
                         <div class="btn-group" role="group" aria-label="Filter toggler">
                           <button type="button" class="btn btn-default disabled">Filter:</button>
-                          <button id="btnFilterToggle" type="button" class="btn btn-default" autocomplete="off"><i class="fa fa-filter" aria-hidden="true"></i></button>
-                          <button id="btnFilterForget" type="button" class="btn btn-default"><i class="fa fa-remove" aria-hidden="true"></i></button>
+                          <button id="btnFilterToggle" type="button" class="btn btn-default" autocomplete="off"
+                                  data-toggle="tooltip" title="Toggle pattern filter"
+                                  data-container="#graphPatternContentPanel .btn-toolbar:first()" data-placement="bottom">
+                            <i class="fa fa-filter" aria-hidden="true"></i>
+                          </button>
+                          <button id="btnFilterForget" type="button" class="btn btn-default"
+                                  data-toggle="tooltip" title="Clear pattern filter"
+                                  data-container="#graphPatternContentPanel .btn-toolbar:first()" data-placement="bottom">
+                            <i class="fa fa-remove" aria-hidden="true"></i>
+                          </button>
                         </div>
                       </div>
                     </div>
@@ -294,7 +328,7 @@
                       <p>In this tab you can see the fused prediction results for your given stimulus.</p>
                       <div class="btn-toolbar" role="toolbar" aria-label="Fused Prediction Controls">
                         <div class="btn-group" role="group">
-                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <button id="fusionDropdownButton" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Fusion Model:
                             <span id="fusionDropdownButtonLabel"></span>
                             <span class="caret"></span>
@@ -369,6 +403,7 @@
 <script src="js/jquery.fittext.js"></script>
 <script src="js/wow.min.js"></script>
 <script src="js/bootstrap3-typeahead.min.js"></script>
+<script src="js/bootstrap-tour.js"></script>
 
 <!-- Custom Theme JavaScript -->
 <script src="js/creative.js"></script>
@@ -397,6 +432,26 @@
     const $fusedPrediction = $demo.find('#fusedPrediction');
     const $fusedPredictionContent = $fusedPrediction.find('#fusedPredictionContent');
     const $fusionDropdown = $fusedPredictionContent.find('#fusionDropdown');
+    const FM_EXPLANATION = {
+        // TODO: Fill these explanations!
+        'f_measures': '1 nices measurement so vong f her',
+        'f_measures_precisions': 'It does precise things',
+        'gp_precisions': 'Also precise but w.r.t. graph patterns',
+        'gp_precisions_precisions': 'Makes precisions precise again!',
+        'precisions': 'Simply precision',
+        'scores': 'High score racing!',
+        'scores_precisions': 'Let\'s see how precise the high score is.',
+        'target_occs': 'Something with occurencies'
+    };
+
+    // https://stackoverflow.com/questions/15690781/twitter-bootstrap-popover-trigger-for-desktop-and-mobile-platforms
+    const isTouchDevice = ("ontouchstart" in window) || window.DocumentTouch && document instanceof DocumentTouch;
+    $(function () {
+          $('body').tooltip({
+              selector: '[data-toggle="tooltip"]',
+              trigger: isTouchDevice ? "focus" : "hover"
+          });
+    });
 
     function load_graph_patterns() {
         $.get(
@@ -487,7 +542,7 @@
         unset_gp_highlights();
         $('#btnFilterToggle').click(toggleGPFilter);
         $('#btnFilterForget').click(unset_gp_highlights);
-
+        DemoTour.start();
     }
 
     function render_targets_into_graph_patterns() {
@@ -568,7 +623,9 @@
             // console.log('render fusion dropdown:', fm, val);
             if (val.length > 1) {
                 let fms = fm.replace(/_/g, ' ');
-                $fusionDropdown.append('<li><a href="#' + fm + '">' + fms + '</a></li>');
+                $fusionDropdown.append('<li data-toggle="tooltip" data-placement="right" ' +
+                    'title="'+FM_EXPLANATION[fm]+'" data-container="#fusedPredictionContent">' +
+                    '<a href="#' + fm + '">' + fms + '</a></li>');
             }
         }
         $fusionDropdown.find('a').click(function (event) {
@@ -600,15 +657,25 @@
                 starget = starget.slice(0, 30) + '...';
             }
             $tbody.append(
-                '<tr>' +
+                '<tr id="prediction-'+i+'">' +
                     '<td class="rank">' + (i+1) + '</td>' +
                     '<td><a class="target" href="' + target + '">' + starget + '</a></td>' +
                     '<td>' + score.toFixed(3) + '</td>' +
-                    '<td><button class="btn btn-xs btn-info filter"><i class="fa fa-list" aria-hidden="true"></i></button></td>' +
+                    '<td><button class="btn btn-xs btn-info filter" data-placement="bottom" data-toggle="tooltip" ' +
+                                'title="Click here to highlight all patterns that predicted this target in the Graph Patterns tab.">' +
+                        '<i class="fa fa-list" aria-hidden="true"></i></button>' +
+                    '</td>' +
                     '<td>' +
                         '<div class="feedback btn-group" role="group">' +
-                            '<button class="btn btn-xs btn-success feedback-positive"><i class="fa fa-check" aria-hidden="true"></i></button>' +
-                            '<button class="btn btn-xs btn-warning feedback-negative"><i class="fa fa-times" aria-hidden="true"></i></button>' +
+                            '<button class="btn btn-xs btn-success feedback-positive"  data-placement="bottom" data-toggle="tooltip" ' +
+                                     'title="We appreciate anonymous feedback: click here if the predicted association fits." ' +
+                                     'data-container="#prediction-'+i+'">' +
+                                '<i class="fa fa-check" aria-hidden="true"></i></button>' +
+                            '<button class="btn btn-xs btn-warning feedback-negative"  data-placement="bottom" data-toggle="tooltip" ' +
+                                     'title="We appreciate anonymous feedback: click here if the predicted association is bad." ' +
+                                     'data-container="#prediction-'+i+'">' +
+                                '<i class="fa fa-times" aria-hidden="true"></i></button>' +
+                            //'<button class="btn btn-xs btn-warning feedback-negative"><i class="fa fa-times" aria-hidden="true"></i></button>' +
                         '</div>' +
                     '</td>' +
                 '</tr>'
@@ -620,24 +687,13 @@
             );
         }
 
-        $table.find('.feedback .btn')
-            // looks weird:
-            //.tooltip({
-            //    'placement': 'bottom',
-            //    'title': "Let us know if this response fits (yes/no). Your feedback allows us to improve future versions of our algorithm."
-            //})
-            .click(feedback);
-        $table.find('.btn.filter')
-            .tooltip({
-                'placement': 'bottom',
-                'title': "Click here to highlight all patterns that predicted this target in the Graph Patterns tab."
-            })
-            .click(explain);
+        $table.find('.feedback .btn').click(feedback);
+        $table.find('.btn.filter').click(explain);
         $fusedPredictionContent.removeClass('hidden');
         $fusedPrediction.find('.placeholder').addClass('hidden');
     }
 
-    function predict(source) {
+    function predict(source, cb) {
         if (!graph_patterns) return;
         if (!source.startsWith('http://dbpedia.org/resource/')) {
             return;
@@ -665,6 +721,7 @@
                 render_fusion_dropdown();
                 render_fused_prediction_results();
                 render_targets_into_graph_patterns();
+                if (cb !== null && typeof cb === 'function') cb();
             },
             'json'
         ).fail(function(jqXHR, textStatus, errorThrown) {
@@ -719,6 +776,7 @@
                             'uri': uris[i]
                         });
                     }
+                    $stimulusAutocomplete.trigger('autocomplete.done');
                     return process(items);
                 },
                 'json'
@@ -756,6 +814,7 @@
     }
     $('#fusedPredictionTabLink').removeAttr('data-toggle').click(tabDisabledHandler);
 </script>
+<script src="gp_learner/demo/tour.js"></script>
 
 <script>
     (function (i, s, o, g, r, a, m) {

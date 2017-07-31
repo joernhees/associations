@@ -124,6 +124,12 @@ var DemoTour;
                         typeStep++;
                     }, 200);
                 },
+                onShow: function (tour) {
+                    $stimulusForm.addClass('demo-mode');
+                },
+                onHidden: function (tour) {
+                    $stimulusForm.removeClass('demo-mode');
+                },
                 onHide: function (tour) {
                     window.clearInterval(demoSearchInterval);
                     $('.typeahead.dropdown-menu li').removeClass('disabled');

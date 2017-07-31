@@ -460,7 +460,34 @@
         'scores_precisions': 'Similar to scores but analogously to precisions each graph pattern distributes its scores score from training over its target candidates at prediction time.',
         'f_measures_precisions': 'Similar to f_measures but analogously to precisions each graph pattern distributes its f_measures score from training over its target candidates at prediction time.',
         'gp_precisions_precisions': 'Similar to gp_precisions but analogously to precisions each graph pattern distributes its gp_precisions score from training over its target candidates at prediction time.',
+        'knn': 'A simple full K-Nearest-Neighbor machine learning model, that uses each target candidate\'s signature wrt. its generating graph patterns as boolean vector (here with 100 dimensions). It uses this vector representation to find the K most similar vectors from training time and predicts relevance based on their respective target candidates\'s relevance.',
+        'svm_linear': 'A Linear Support Vector Machine model that was trained on and uses each target candidate\'s signature wrt. its generating graph patterns as boolean vector (here with 100 dimensions) to predict its relevance score.',
+        'neural_net': 'A Neural Network model that was trained on and uses each target candidate\'s signature wrt. its generating graph patterns as boolean vector (here with 100 dimensions) to predict its relevance score.',
+        'logistic_regression': 'A Logistic Regression model that was trained on and uses each target candidate\'s signature wrt. its generating graph patterns as boolean vector (here with 100 dimensions) to predict its relevance score.',
+        'random_forest': 'A Random Forest model that was trained on and uses each target candidate\'s signature wrt. its generating graph patterns as boolean vector (here with 100 dimensions) to predict its relevance score.',
+        'gtb': 'A Gradient Tree Boosting model that was trained on and uses each target candidate\'s signature wrt. its generating graph patterns as boolean vector (here with 100 dimensions) to predict its relevance score.',
+        'rank_svm': 'A RankSVM model that was trained on and uses each target candidate\'s signature wrt. its generating graph patterns as boolean vector (here with 100 dimensions) to predict its relevance score.',
     };
+    const FM_ORDER = [
+        '#basic',
+            'target_occs',
+            'precisions',
+            'scores',
+            'f_measures',
+            'gp_precisions',
+            'scores_precisions',
+            'f_measures_precisions',
+            'gp_precisions_precisions',
+
+        '#full machine learning',
+            'knn',
+            'svm_linear',
+            'neural_net',
+            'logistic_regression',
+            'random_forest',
+            'gtb',
+            'rank_svm',
+    ];
 
     // https://stackoverflow.com/questions/15690781/twitter-bootstrap-popover-trigger-for-desktop-and-mobile-platforms
     const isTouchDevice = ("ontouchstart" in window) || window.DocumentTouch && document instanceof DocumentTouch;
@@ -633,8 +660,36 @@
 
     function render_fusion_dropdown() {
         $fusionDropdown.empty();
-        for (let [fm, val] of Object.entries(fused_results)) {
+        let fml = [];
+
+        // get existing ones as in FM_ORDER
+        for (let fm of FM_ORDER) {
+            if (fm.startsWith('#') || fm in fused_results) {
+                fml.push(fm)
+            }
+        }
+
+        // append remaining ones (won't be explained)
+        let first = true;
+        for (let fm of Object.keys(fused_results)) {
+            if (fml.indexOf(fm) < 0) {
+                if (first) {
+                    fml.push('#others');
+                    first = false;
+                }
+                fml.push(fm)
+            }
+        }
+
+        // actually render
+        for (let fm of fml) {
             // console.log('render fusion dropdown:', fm, val);
+            if (fm.startsWith('#')) {
+                // header
+                $fusionDropdown.append('<li class="dropdown-header">' + fm.slice(1) + '</li>');
+                continue;
+            }
+            let val = fused_results[fm];
             if (val.length > 1) {
                 let fms = fm.replace(/_/g, ' ');
                 $fusionDropdown.append('<li data-toggle="tooltip" data-placement="right" ' +

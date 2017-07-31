@@ -251,7 +251,7 @@ var DemoTour;
             {
                 element: '#btnFilterToggle',
                 title: 'Toggling / Clearing the Filter',
-                content: 'As you clicked the "explain" button before, only graph patterns are shown that are relevant for the target to be explained (&ldquo;'+DEMO_EXPLAIN_RESULT_TERM+'&rdquo;). With this you can toggle this filter...',
+                content: 'As you clicked the "explain" button before, only graph patterns were shown and are selected that are relevant for the target to be explained (&ldquo;'+DEMO_EXPLAIN_RESULT_TERM+'&rdquo;). With this you can button you can toggle showing all or only the selected graph patterns...',
                 onShow: function (tour) {
                     $('#btnFilterToggle').click();
                 }
@@ -259,7 +259,7 @@ var DemoTour;
             {
                 element: '#btnFilterForget',
                 title: 'Toggling / Clearing the Filter',
-                content: '... or clear it.',
+                content: '... and reset the selection altogether with this button.',
                 onShow: function (tour) {
                     $('#btnFilterForget').click();
                 }

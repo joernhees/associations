@@ -862,11 +862,12 @@
             return `${item.title} <a href="${item.uri}">${item.uri}</a>`
         },
         'afterSelect': function(item) {
+            if ($stimulusForm.hasClass('demo-mode')) return;
             let uri = item.uri;
             uri = uri.replace(/^https?:\/\/\w+\.wikipedia\.org\/wiki\//, 'http://dbpedia.org/resource/');
             this.$element.val(uri);
             this.$element.text(uri);
-            $('#stimulusForm').find('button').click();
+            $stimulusForm.find('button').click();
             // predict(uri);
             return uri;
         },
@@ -876,6 +877,7 @@
         $(this).val('');
     });
     $stimulusForm.submit(function (event) {
+        if ($(this).hasClass('demo-mode')) return;
         let source = $(this).find('.autocomplete').val();
         event.preventDefault();
         predict(source);

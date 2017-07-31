@@ -442,6 +442,7 @@
     let graph_patterns = null;
     let demo_source = '';
     let fused_results = null;
+    let orig_result_length = -1;
     let gp_tcs = null;
 
     const $demo = $('#demoResults');
@@ -750,9 +751,10 @@
                 '</tr>'
             );
         }
-        if (res.length > MAX_RESULT_ROWS) {
+        let l = Math.max(res.length, orig_result_length);
+        if (l > MAX_RESULT_ROWS) {
             $tbody.append(
-                '<tr><td class="text-center" colspan="5">... ' + (res.length - MAX_RESULT_ROWS) + ' further results hidden to save your browser.</td></tr>'
+                '<tr><td class="text-center" colspan="5">... ' + (l - MAX_RESULT_ROWS) + ' further results hidden to save your browser.</td></tr>'
             );
         }
 
@@ -786,6 +788,7 @@
             function (data) {
                 console.log('prediction data:', data);
                 fused_results = data['fused_results'];
+                orig_result_length = data['orig_result_length'] || -1;
                 gp_tcs = data['graph_pattern_target_candidates'];
                 render_fusion_dropdown();
                 render_fused_prediction_results();

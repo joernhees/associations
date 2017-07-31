@@ -98,7 +98,9 @@ var DemoTour;
             {
                 element: '#stimulusForm',
                 title: 'Entering a stimulus',
-                content: "Let's jump right in and enter a stimulus, e.g. " + DEMO_SEARCH_TERM,
+                content: "Let's jump right in and enter a stimulus, e.g. " + DEMO_SEARCH_TERM +
+                         "Then pick an item from the dropdown to choose a semantic " +
+                         "entity from dbpedia. We'll pick the first one.",
                 placement: 'top',
                 onShown: function (tour) {
                     let typeStep = 0;
@@ -112,6 +114,13 @@ var DemoTour;
                         } else if (typeStep === DEMO_SEARCH_TERM.length) {
                             $search.focus();
                             $search.val(DEMO_SEARCH_TERM);
+                            let autocompleteDoneHandler = function () {
+                                let $typeahead = $('.typeahead.dropdown-menu');
+                                $typeahead.find('li:first').addClass('active');
+                                $typeahead.find('li:not(:first)').addClass('disabled');
+                                $search.off('autocomplete.done', autocompleteDoneHandler);
+                            };
+                            $search.on('autocomplete.done', autocompleteDoneHandler);
                             $search.typeahead('lookup');
                         }
                         typeStep++;
@@ -119,37 +128,15 @@ var DemoTour;
                 },
                 onHide: function (tour) {
                     window.clearInterval(demoSearchInterval);
+                    $('.typeahead.dropdown-menu li').removeClass('disabled');
                 },
                 onNext: function (tour) {
                     $search.val(DEMO_SEARCH_TERM);
                 },
                 onPrev: function (tour) {
                     $search.val('');
-                }
-            },
-            {
-                element: '.typeahead.dropdown-menu li:first',
-                title: 'Entity disambiguation',
-                content: "As you can see, your inputs are immediately disambiguated to a Wikipedia article, allowing you to pick a semantic entity easily. Pick the top one.",
-                placement: 'top',
-                backdrop: false, // backdrop and dropdown does not work together
-                onShow: function (tour) {
-                    const promise = new Promise((resolve, reject) => {
-                        let autocompleteDoneHandler = function () {
-                            $search.off('autocomplete.done', autocompleteDoneHandler);
-                            resolve();
-                        };
-                        $search.on('autocomplete.done', autocompleteDoneHandler);
-                    });
-                    $search.focus();
-                    $search.val(DEMO_SEARCH_TERM);
-                    $search.typeahead('lookup');
-                    return promise
                 },
-                onShown: function (tour) {
-                    $search.typeahead('lookup');
-                },
-                reflex: true,
+                reflex: 'click'
             },
             {
                 element: '#fusedPredictionContent .table',

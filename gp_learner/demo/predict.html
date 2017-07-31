@@ -116,6 +116,15 @@
       opacity: 1.0;
     }
 
+    .disabled,
+    .disabled *,
+    .disabled *:hover,
+    .disabled *:focus {
+      cursor: not-allowed;
+      color: #777;
+      text-decoration: none;
+    }
+
     /* graph style */
     path.link {
     fill: none;
@@ -781,8 +790,9 @@
                             'uri': uris[i]
                         });
                     }
+                    let ret = process(items);
                     $stimulusAutocomplete.trigger('autocomplete.done');
-                    return process(items);
+                    return ret;
                 },
                 'json'
             );

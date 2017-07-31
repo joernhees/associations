@@ -151,9 +151,18 @@
     }
 
     /* stuff needed for the tour to look good */
-    .btn-group > .btn.tour-step-backdrop.tour-tour-element,
-    .list-group > .list-group-item.tour-step-backdrop.tour-tour-element {
+    .btn-group .tour-step-backdrop.tour-tour-element,
+    .btn-group .tour-step-backdrop.tour-tour-element.active,
+    .list-group .list-group-item.tour-step-backdrop.tour-tour-element.active,
+    .list-group .list-group-item.tour-step-backdrop.tour-tour-element,
+    .list-group .list-group-item .tour-step-backdrop.tour-tour-element,
+    .list-group .list-group-item.active .tour-step-backdrop.tour-tour-element
+    {
         z-index: 1101;
+    }
+    /* yes, don't ask please... */
+    .list-group-item.active, .list-group-item.active:hover {
+        z-index: auto;
     }
     .tour-backdrop {
       opacity: .3;
@@ -328,7 +337,7 @@
                     <div class="panel-heading">
                       <p>In this tab you can see the fused prediction results for your given stimulus.</p>
                       <div class="btn-toolbar" role="toolbar" aria-label="Fused Prediction Controls">
-                        <div class="btn-group" role="group">
+                        <div id="fusionDropdownGroup" class="btn-group" role="group">
                           <button id="fusionDropdownButton" type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Fusion Model:
                             <span id="fusionDropdownButtonLabel"></span>

@@ -73,12 +73,25 @@ var DemoTour;
                 };
                 if ($tabLink.parent().hasClass('active')) {
                     $(filterButtonSelector).click();
-                    resolve();
                 } else {
                     $tabLink
                         .on('shown.bs.tab', handler)
                         .tab('show');
                     $(filterButtonSelector).click();
+                }
+                let collapsing = $('.collapsing[aria-expanded="true"]');
+                if (collapsing.length) {
+                    let todo = collapsing.length;
+                    collapsing.each(function (idx, e) {
+                        $(e).one('shown.bs.collapse', function () {
+                            if (--todo == 0) {
+                                resolve();
+                            }
+                        });
+                    });
+
+                } else {
+                    resolve();
                 }
             });
         });
@@ -196,10 +209,19 @@ var DemoTour;
                 placement: 'top',
                 content: 'Additionally, by clicking the "Graph & Info" drop-down, you can view each pattern graphically and see its fitness information from training. For more information on this, please see <a href="https://w3id.org/associations/#paper_gplearner">the graph learner paper</a>.',
                 onShow: function (tour) {
-                    $('li.list-group-item.graphPattern.active:first a.info').click();
+                    return new Promise((resolve, reject) => {
+                        let $div = $('li.list-group-item.graphPattern.active:first div.info');
+                        $div.one('shown.bs.collapse', resolve);
+                        if (! $div.hasClass('collapse')) {
+                            resolve();
+                            return;
+                        }
+                        // only open the info drop-down if it's closed
+                        $('li.list-group-item.graphPattern.active:first a.info').click();
+                    });
                 },
-                onHidden: function () {
-                    $('li.list-group-item.graphPattern.active:first a.info').click();
+                onHide: function () {
+                    $('li.list-group-item.graphPattern.active:first a.info:not(.collapsed)').click();
                 }
             },
             {
@@ -242,6 +264,9 @@ var DemoTour;
                 title: 'Collapse all SPARQL',
                 content: 'To get a quick overview, you can collapse all SPARQL representations...',
                 onShow: function (tour) {
+                    return forceShowExplanation();
+                },
+                onNext: function (tour) {
                     $('#btnAllSPARQLCollapse').click();
                 }
             },
@@ -249,23 +274,36 @@ var DemoTour;
                 element: '#btnAllTargetsCollapse',
                 title: 'Collapse all Targets',
                 content: '... and all targets.',
-                onShow: function (tour) {
+                onNext: function (tour) {
                     $('#btnAllTargetsCollapse').click();
-                }
+                },
             },
             {
                 element: '#btnFilterToggle',
                 title: 'Toggling / Clearing the Filter',
                 content: 'As you clicked the "explain" button before, only graph patterns were shown and are selected that are relevant for the target to be explained (&ldquo;'+DEMO_EXPLAIN_RESULT_TERM+'&rdquo;). With this you can button you can toggle showing all or only the selected graph patterns...',
-                onShow: function (tour) {
-                    $('#btnFilterToggle').click();
-                }
+                onNext: function (tour) {
+                    // .active makes sure the filter is currently set
+                    $('#btnFilterToggle.active').click();
+                },
             },
             {
                 element: '#btnFilterForget',
                 title: 'Toggling / Clearing the Filter',
                 content: '... and reset the selection altogether with this button.',
                 onShow: function (tour) {
+                    return new Promise((resolve, reject) => {
+                        let $tabLink = $('#graphPatternsTabLink');
+                        if ($tabLink.parent().hasClass('active')) {
+                            resolve();
+                        } else {
+                            $tabLink
+                                .one('shown.bs.tab', resolve)
+                                .tab('show');
+                        }
+                    });
+                },
+                onNext: function (tour) {
                     $('#btnFilterForget').click();
                 }
             },

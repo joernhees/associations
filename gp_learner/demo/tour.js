@@ -1,10 +1,10 @@
 var DemoTour;
 
 {
-    let DEMO_SEARCH_TERM = 'Dog';
-    let DEMO_SEARCH_URI = 'http://dbpedia.org/resource/Dog';
-    let DEMO_EXPLAIN_RESULT_TERM = 'Grape';
-    let DEMO_EXPLAIN_RESULT_URI = 'http://dbpedia.org/resource/Grape';
+    let DEMO_SEARCH_TERM = 'Circus';
+    let DEMO_SEARCH_URI = 'http://dbpedia.org/resource/Circus';
+    let DEMO_EXPLAIN_RESULT_TERM = 'Juggling';
+    let DEMO_EXPLAIN_RESULT_URI = 'http://dbpedia.org/resource/Juggling';
     let demoSearchInterval;
     let $search = $('#stimulusForm').find('input[type=text]');
     let filterButtonSelector = '#fusedPredictionContent .table tr td:has(a[href="'+
@@ -86,20 +86,60 @@ var DemoTour;
 
     DemoTour = new Tour({
         debug: true,
+        backdrop: true,
+        backdropPadding: 5,
+        orphan: true,
         steps: [
             {
-                element: '#graphPatternContentPanel',
-                title: 'The learned patterns',
-                content: 'Here you can see all patterns learned and used for ' +
-                         'prediction. We\'ll come back to that later.',
+                title: 'Demo Tour',
+                content: "With this quick walk-through we'll show you all components of this demo. Tipp: You can use the arrow keys on your keyboard <kbd><i class='fa fa-arrow-left'></i></kbd>,<kbd><i class='fa fa-arrow-right'></i></kbd>.",
+            },
+            {
+                element: '#gp1',
+                title: 'Learned patterns',
+                placement: 'top',
+                content: "Before starting any fancy prediction stuff, you can already explore the patterns learned during training time. These are the patterns that will be used to predict responses later in this demo.",
                 onShow: function (tour) {
                     return forceShowUnfilteredPatterns();
                 }
             },
             {
+                element: '#gp1 .sparql',
+                title: 'SPARQL',
+                placement: 'top',
+                content: "If you like, you can expand each pattern to see its SPARQL form. Each query contains at least one <code>?source</code> and <code>?target</code> variable. When entering a stimulus above, its semantic entity will be inserted in place of all <code>?source</code> variables in all of the GraphPatterns. Next, each SPARQL query will be executed and the <code>?target</code> variables selected (more on this later).",
+                onShow: function (tour) {
+                    $('#gp1 a.sparql').click();
+                },
+                onHidden: function () {
+                    $('#gp1 a.sparql').click();
+                }
+            },
+            {
+                element: '#gp1 .info',
+                title: 'Graph & Info',
+                placement: 'top',
+                content: 'Additionally you can view each pattern graphically and see its fitness information from training. For more information on this, please see <a href="https://w3id.org/associations/#paper_gplearner">the graph learner paper</a>.',
+                onShow: function (tour) {
+                    $('#gp1 a.info').click();
+                },
+                onHidden: function () {
+                    $('#gp1 a.info').click();
+                }
+            },
+            {
+                element: '#gp1 a.targets',
+                title: 'Targets',
+                placement: 'top',
+                content: 'Additionally you can view the pattern graphically and see its fitness information from training.',
+                onShow: function (tour) {
+                    $('#gp1 a.targets').click();
+                }
+            },
+            {
                 element: '#stimulusForm',
-                title: 'Do Search',
-                content: DEMO_SEARCH_TERM,
+                title: 'Entering a stimulus',
+                content: "Let's jump right in and enter a stimulus, e.g. " + DEMO_SEARCH_TERM,
                 placement: 'top',
                 onShown: function (tour) {
                     let typeStep = 0;
@@ -130,8 +170,8 @@ var DemoTour;
             },
             {
                 element: '.typeahead.dropdown-menu li:first',
-                title: 'Click one',
-                content: 'Woof!',
+                title: 'Entity disambiguation',
+                content: "As you can see, your inputs are immediately disambiguated to a Wikipedia article, allowing you to pick a semantic entity easily. Pick the top one.",
                 placement: 'top',
                 backdrop: false, // backdrop and dropdown does not work together
                 onShow: function (tour) {
@@ -150,6 +190,7 @@ var DemoTour;
                 onShown: function (tour) {
                     $search.typeahead('lookup');
                 },
+                reflex: true,
             },
             {
                 element: '#fusionDropdownButton',
@@ -201,8 +242,6 @@ var DemoTour;
             }
 
         ],
-        backdrop: true,
-        backdropPadding: 5,
     });
 
     // Initialize the tour

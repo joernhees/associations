@@ -155,6 +155,9 @@
     .list-group > .list-group-item.tour-step-backdrop.tour-tour-element {
         z-index: 1101;
     }
+    .tour-backdrop {
+      opacity: .3;
+    }
   </style>
 </head>
 
@@ -504,9 +507,9 @@
                                 .append($fitnesstable)))));
             let $li = $('<li id="gp' + i + '" class="list-group-item graphPattern">')
                 .append('<h4 class="list-group-item-heading">GraphPattern ' + i +
-                        ' <small><a data-toggle="collapse" href="#gpSparql'+ i +'">SPARQL <i class="fa fa-caret-down"></i></a></small>' +
-                        ' <small><a data-toggle="collapse" href="#gpInfo'+ i +'">Graph & Info <i class="fa fa-caret-down"></i></a></small>' +
-                        ' <small><a data-toggle="collapse" href="#gpTargets'+ i +'">Targets <span class="targetCount badge">0</span><i class="fa fa-caret-down"></i></a></small>' +
+                        ' <small><a class="sparql" data-toggle="collapse" href="#gpSparql'+ i +'">SPARQL <i class="fa fa-caret-down"></i></a></small>' +
+                        ' <small><a class="info" data-toggle="collapse" href="#gpInfo'+ i +'">Graph & Info <i class="fa fa-caret-down"></i></a></small>' +
+                        ' <small><a class="targets" data-toggle="collapse" href="#gpTargets'+ i +'">Targets <span class="targetCount badge">0</span><i class="fa fa-caret-down"></i></a></small>' +
                         '</h4>')
                 //.append($triples)
                 .append($sparql)

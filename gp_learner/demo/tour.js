@@ -264,6 +264,15 @@ var DemoTour;
                 }
             },
             {
+                element: '.btn-group.feedback:first',
+                title: 'Help us to improve',
+                content: 'If you want, you can help us to improve in the future. Click these buttons if you think a predicted response is correct/incorrect.',
+                onShow: function () {
+                    return forceShowFusedResults();
+                },
+                reflex: true,
+            },
+            {
                 title: 'End of Tour',
                 content: "That's it, feel free to play around with this demo. If you like it or have any other feedback, let us know ;)",
             },

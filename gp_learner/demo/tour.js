@@ -98,9 +98,7 @@ var DemoTour;
             {
                 element: '#stimulusForm',
                 title: 'Entering a stimulus',
-                content: "Let's jump right in and enter a stimulus, e.g. " + DEMO_SEARCH_TERM +
-                         "Then pick an item from the dropdown to choose a semantic " +
-                         "entity from dbpedia. We'll pick the first one.",
+                content: "Let's jump right in and enter a stimulus, e.g. &ldquo;" + DEMO_SEARCH_TERM + "&rdquo;. As you can see the inputs are automatically disambiguated to Wikipedia Articles, allowing you to quickly pick the right semantic entity. On selection the article will be transformed to the corresponding DBpedia entity. Let's pick the first one.",
                 placement: 'top',
                 onShown: function (tour) {
                     let typeStep = 0;
@@ -142,7 +140,7 @@ var DemoTour;
                 element: '#fusedPredictionContent .table',
                 placement: 'top',
                 title: 'Prediction Results',
-                content: 'After a short while, you will see the fused prediction results in this table.',
+                content: 'After a short while, you will see the fused prediction results in this table. As you can see the top results of the fused prediction are quite similar to human associations.<br/>To get a feeling for the complexity of this ranking, it is useful to know that even only the one-neighborhood of <a href="'+DEMO_SEARCH_URI+'">dbr:'+DEMO_SEARCH_TERM+'</a> already contains about 500 out-neighbors and 1570 in-neighbors, most of which aren\'t good candidates for associations. The learned graph patterns (as we will see later) however are not limited to the direct neighborhood, but also use multi-hop relations for their prediction.',
                 onShow: function (tour) {
                     let $tour = $('.popover.tour-tour');
                     $tour.find('.popover-title').text('Predicting');
@@ -154,7 +152,7 @@ var DemoTour;
                 element: '#fusionDropdownGroup',
                 placement: 'top',
                 title: 'Choose a fusion method',
-                content: 'The scores and ranking of the prediction results depend on the selected fusion method: In its raw form, each graph pattern results in an unranked list of target candidates. The fusion method combines, scores and ranks these individual candidate lists. You can hover over the fusion methods to see a short explanation for each of them.',
+                content: 'The scores and ranking of the prediction results depend on the selected fusion method: In its raw form, each graph pattern (as we will see in a second) results in an unranked list of target candidates. The fusion method combines, scores and ranks these individual candidate lists. You can hover over the fusion methods to see a short explanation for each of them.',
                 onShow: function (tour) {
                     return forceShowFusedResults();
                 }
@@ -162,10 +160,11 @@ var DemoTour;
             {
                 element: filterButtonSelector,
                 title: 'Get explanations of predictions',
-                content: 'To see which of the raw graph patterns was involved in predicting this target candidate &ldquo;'+DEMO_EXPLAIN_RESULT_TERM+'&rdquo; to be as associated with &ldquo;'+DEMO_SEARCH_TERM+'&rdquo; you can click on this button.',
+                content: 'To see which of the raw graph patterns was involved in predicting this target candidate &ldquo;'+DEMO_EXPLAIN_RESULT_TERM+'&rdquo; to be associated with &ldquo;'+DEMO_SEARCH_TERM+'&rdquo;, you can click on this button.',
                 onShow: function () {
                     return forceShowFusedResults();
                 },
+                reflex: true,
             },
             {
                 element: 'li.list-group-item.graphPattern.active:first',
@@ -180,7 +179,7 @@ var DemoTour;
                 element: 'li.list-group-item.graphPattern.active:first div.sparql',
                 title: 'Graph Patterns SPARQL',
                 placement: 'top',
-                content: 'Here you can see the SPARQL representation of this graph pattern. Each query contains at least one <code>?source</code> and <code>?target</code> variable. When entering a stimulus above (as you have done before), for prediction its semantic entity will be inserted in place of all <code>?source</code> variables in all of the GraphPatterns. Next, each SPARQL query will be executed and the <code>?target</code> variables selected. They form the raw target candidates which become the input for the selected fusion method.',
+                content: 'On top of each graph pattern you can see its SPARQL representation. Each query contains at least one <code>?source</code> and <code>?target</code> variable. When entering a stimulus above (as you have done before), for prediction its semantic entity will be inserted in place of all <code>?source</code> variables. Next, each SPARQL query will be executed and the <code>?target</code> variable selected. The results form the raw target candidates which become the input for the selected fusion method as mentioned before.',
                 onShow: function (tour) {
                     return forceShowExplanation();
                 }
@@ -266,7 +265,7 @@ var DemoTour;
             },
             {
                 title: 'End of Tour',
-                content: "That's it, feel free to play around with this demo. If you like it of have any feedback, let us know ;)",
+                content: "That's it, feel free to play around with this demo. If you like it or have any other feedback, let us know ;)",
             },
 
 
